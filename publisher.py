@@ -1,11 +1,13 @@
-from nio.common.block.base import Block
+from nio.common.versioning.dependency import DependsOn
 from nio.common.discovery import Discoverable, DiscoverableType
 from nio.modules.communication.imports import Publisher as NIOPublisher
-from nio.common.block.criteria import CriteriaBlock
+from .criteria import CriteriaBlock
 
 
+@DependsOn("nio.modules.communication")
 @Discoverable(DiscoverableType.block)
 class Publisher(CriteriaBlock):
+
     """ A block for publishing to a NIO communication channel.
 
     Functions regardless of communication module implementation.
@@ -15,6 +17,7 @@ class Publisher(CriteriaBlock):
             if their specified signal type matches.
 
     """
+
     def __init__(self):
         super().__init__()
         self._publisher = None

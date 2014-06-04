@@ -1,11 +1,13 @@
-from nio.common.block.base import Block
+from nio.common.versioning.dependency import DependsOn
 from nio.common.discovery import Discoverable, DiscoverableType
 from nio.modules.communication.imports import Subscriber as NIOSubscriber
-from nio.common.block.criteria import CriteriaBlock
+from .criteria import CriteriaBlock
 
 
+@DependsOn("nio.modules.communication")
 @Discoverable(DiscoverableType.block)
 class Subscriber(CriteriaBlock):
+
     """ A block for subscribing to a NIO communication channel.
 
     Functions regardless of communication module implementation.
@@ -15,6 +17,7 @@ class Subscriber(CriteriaBlock):
             with a matching type.
 
     """
+
     def __init__(self):
         super().__init__()
         self._subscriber = None
