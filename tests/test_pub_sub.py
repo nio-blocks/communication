@@ -1,5 +1,5 @@
 from nio.configuration import Configuration
-from nio.core.components.communication.manager import CommManager
+from nioext.extensions.components.communication.manager import CommManager
 from nio.core.context import InitContext
 from communication.publisher import Publisher
 from communication.subscriber import Subscriber
@@ -7,7 +7,7 @@ from nio.modules.communication.zmq.tests import OPEN_CLOSE_SLEEP_WAIT
 from nio.modules.threading.imports import sleep
 from nio.util.attribute_dict import AttributeDict
 from nio.util.support.block_test_case import NIOBlockTestCase
-from nio.modules.communication import module_init, module_finalize
+from nio.modules.communication import CommunicationModule
 
 
 MATCHING = 'nio.modules.communication.zmq.matching.default.DefaultMatching'
@@ -49,7 +49,7 @@ class TestPubSub(NIOBlockTestCase):
             ]
         })
 
-        module_init(self._configuration)
+        CommunicationModule.module_init(self._configuration)
         sleep(OPEN_CLOSE_SLEEP_WAIT)
 
         pub.start()
@@ -63,7 +63,7 @@ class TestPubSub(NIOBlockTestCase):
 
         pub.stop()
         sub.stop()
-        module_finalize()
+        CommunicationModule.module_finalize()
 
     def test_ignore_other_types(self):
         pub1 = Publisher()
@@ -89,7 +89,7 @@ class TestPubSub(NIOBlockTestCase):
             ]
         })
 
-        module_init(self._configuration)
+        CommunicationModule.module_init(self._configuration)
         sleep(OPEN_CLOSE_SLEEP_WAIT)
 
         pub1.start()
@@ -107,7 +107,7 @@ class TestPubSub(NIOBlockTestCase):
         pub2.stop()
         sub.stop()
 
-        module_finalize()
+        CommunicationModule.module_finalize()
 
     def test_subscribe_partial_match(self):
         pub = Publisher()
@@ -147,7 +147,7 @@ class TestPubSub(NIOBlockTestCase):
             ]
         })
 
-        module_init(self._configuration)
+        CommunicationModule.module_init(self._configuration)
         sleep(OPEN_CLOSE_SLEEP_WAIT)
 
         pub.start()
@@ -167,4 +167,4 @@ class TestPubSub(NIOBlockTestCase):
         sub1.stop()
         sub2.stop()
         sub3.stop()
-        module_finalize()
+        CommunicationModule.module_finalize()

@@ -15,7 +15,7 @@ class Criterion(PropertyHolder):
 
     """
     keyword = StringProperty(title='Keyword', default='')
-    rule = ListProperty(title='Rule (list of acceptable values)', StringProperty)
+    rule = ListProperty(StringProperty, title='Rule (list of acceptable values)')
 
 
 class CriteriaBlock(Block):
@@ -27,7 +27,7 @@ class CriteriaBlock(Block):
             as needed.
 
     """
-    criteria = ListProperty(title='Criteria', Criterion)
+    criteria = ListProperty(Criterion, title='Criteria')
 
     def _flatten_criteria(self):
         result = {}
