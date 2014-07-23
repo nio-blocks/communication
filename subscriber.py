@@ -1,6 +1,6 @@
 from nio.common.versioning.dependency import DependsOn
 from nio.common.discovery import Discoverable, DiscoverableType
-from nio.modules.communication.imports import Subscriber as NIOSubscriber
+from nio.modules.communication.subscriber import Subscriber as NIOSubscriber
 from .criteria import CriteriaBlock
 
 

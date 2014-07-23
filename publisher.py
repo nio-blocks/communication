@@ -1,6 +1,6 @@
 from nio.common.versioning.dependency import DependsOn
 from nio.common.discovery import Discoverable, DiscoverableType
-from nio.modules.communication.imports import Publisher as NIOPublisher
+from nio.modules.communication.publisher import Publisher as NIOPublisher
 from .criteria import CriteriaBlock
 
 

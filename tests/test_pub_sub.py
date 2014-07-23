@@ -4,13 +4,13 @@ from nio.core.context import InitContext
 from communication.publisher import Publisher
 from communication.subscriber import Subscriber
 from nio.modules.communication.zmq.tests import OPEN_CLOSE_SLEEP_WAIT
-from nio.modules.threading.imports import sleep
+from nio.modules.threading import sleep
 from nio.util.attribute_dict import AttributeDict
 from nio.util.support.block_test_case import NIOBlockTestCase
 from nio.modules.communication import CommunicationModule
 
 
-MATCHING = 'nio.modules.communication.zmq.matching.default.DefaultMatching'
+MATCHING = 'nio.modules.communication.matching.default.DefaultMatching'
 
 
 class TestPubSub(NIOBlockTestCase):
