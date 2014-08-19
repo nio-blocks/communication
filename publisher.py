@@ -1,6 +1,7 @@
 from nio.common.versioning.dependency import DependsOn
 from nio.common.discovery import Discoverable, DiscoverableType
 from nio.modules.communication.publisher import Publisher as NIOPublisher
+from nio.modules.communication.publisher import PublisherError
 from .criteria import CriteriaBlock
 
 
@@ -45,4 +46,9 @@ class Publisher(CriteriaBlock):
         the signals it processes.
 
         """
-        self._publisher.send(signals)
+        try:
+            self._publisher.send(signals)
+        except PublisherError as e:
+            self._logger.error(
+                "While publishing: {0}: {1}".format(type(e).__name__, e)
+            )
