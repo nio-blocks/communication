@@ -1,9 +1,10 @@
+from nioext.extensions.modules.communication.zmq.tests import \
+    OPEN_CLOSE_SLEEP_WAIT
 from ..publisher import Publisher
 from ..subscriber import Subscriber
 from nio.configuration import Configuration
 from nioext.extensions.components.communication.manager import CommManager
 from nio.core.context import InitContext
-from nio.modules.communication.zmq.tests import OPEN_CLOSE_SLEEP_WAIT
 from nio.modules.threading import sleep
 from nio.util.attribute_dict import AttributeDict
 from nio.util.support.block_test_case import NIOBlockTestCase
