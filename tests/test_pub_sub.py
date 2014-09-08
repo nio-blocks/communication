@@ -1,5 +1,4 @@
-from nioext.extensions.modules.communication.zmq.tests import \
-    OPEN_CLOSE_SLEEP_WAIT
+from nioext.modules.communication.zmq.tests import OPEN_CLOSE_SLEEP_WAIT
 from ..publisher import Publisher
 from ..subscriber import Subscriber
 from nio.configuration import Configuration
