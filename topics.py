@@ -14,11 +14,12 @@ class Criterion(PropertyHolder):
         rules (list(str)): valid match values
 
     """
-    keyword = StringProperty(title='Keyword', default='')
-    rule = ListProperty(StringProperty, title='Rule (list of acceptable values)')
+    keyword = StringProperty(title='Filter Key', default='')
+    rule = ListProperty(StringProperty, 
+                        title='Filter Values (list of acceptable values)')
 
 
-class CriteriaBlock(Block):
+class TopicsBlock(Block):
 
     """ Base class for blocks that contain a list of criteria.
 
@@ -27,9 +28,9 @@ class CriteriaBlock(Block):
             as needed.
 
     """
-    criteria = ListProperty(Criterion, title='Criteria')
+    criteria = ListProperty(Criterion, title='Topics')
 
-    def _flatten_criteria(self):
+    def _flatten_topics(self):
         result = {}
         for c in self.criteria:
             tmp = c.to_dict()

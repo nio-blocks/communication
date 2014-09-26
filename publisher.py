@@ -2,12 +2,12 @@ from nio.common.versioning.dependency import DependsOn
 from nio.common.discovery import Discoverable, DiscoverableType
 from nio.modules.communication.publisher import Publisher as NIOPublisher
 from nio.modules.communication.publisher import PublisherError
-from .criteria import CriteriaBlock
+from .topics import TopicsBlock
 
 
 @DependsOn("nio.modules.communication")
 @Discoverable(DiscoverableType.block)
-class Publisher(CriteriaBlock):
+class Publisher(TopicsBlock):
 
     """ A block for publishing to a NIO communication channel.
 
@@ -25,7 +25,7 @@ class Publisher(CriteriaBlock):
 
     def configure(self, context):
         super().configure(context)
-        self._publisher = NIOPublisher(**self._flatten_criteria())
+        self._publisher = NIOPublisher(**self._flatten_topics())
 
     def start(self):
         """ Start the block by opening the underlying publisher
