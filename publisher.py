@@ -26,12 +26,6 @@ class Publisher(TopicsBlock):
     def configure(self, context):
         super().configure(context)
         self._publisher = NIOPublisher(**self._flatten_topics())
-
-    def start(self):
-        """ Start the block by opening the underlying publisher
-
-        """
-        super().start()
         self._publisher.open()
 
     def stop(self):
