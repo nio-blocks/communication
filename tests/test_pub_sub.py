@@ -2,7 +2,7 @@ from nioext.modules.communication.zmq.tests import OPEN_CLOSE_SLEEP_WAIT
 from ..publisher import Publisher
 from ..subscriber import Subscriber
 from nio.configuration import Configuration
-from nioext.extensions.components.communication.manager import CommManager
+from nioext.components.communication.manager import CommManager
 from nio.core.context import InitContext
 from nio.modules.threading import sleep
 from nio.util.attribute_dict import AttributeDict
@@ -14,6 +14,10 @@ MATCHING = 'nio.modules.communication.matching.default.DefaultMatching'
 
 
 class TestPubSub(NIOBlockTestCase):
+
+    def get_test_modules(self):
+        return super().get_test_modules() + ['communication']
+    
     def setUp(self):
         super().setUp()
         self._comm_manager = CommManager()
@@ -23,8 +27,8 @@ class TestPubSub(NIOBlockTestCase):
         self._configuration = AttributeDict(
             {"communication": "zmq",
              "matching": MATCHING,
-             "xpub_url": self._comm_manager.xpub_url,
-             "xsub_url": self._comm_manager.xsub_url,
+             "xpub_port": 9000,
+             "xsub_port": 9001,
              "ZMQ_MAX_IO_THREAD_COUNT": 1})
 
     def tearDown(self):
@@ -49,7 +53,6 @@ class TestPubSub(NIOBlockTestCase):
             ]
         })
 
-        CommunicationModule.module_init(self._configuration)
         sleep(OPEN_CLOSE_SLEEP_WAIT)
 
         pub.start()
@@ -63,7 +66,6 @@ class TestPubSub(NIOBlockTestCase):
 
         pub.stop()
         sub.stop()
-        CommunicationModule.module_finalize()
 
     def test_ignore_other_types(self):
         pub1 = Publisher()
@@ -89,7 +91,6 @@ class TestPubSub(NIOBlockTestCase):
             ]
         })
 
-        CommunicationModule.module_init(self._configuration)
         sleep(OPEN_CLOSE_SLEEP_WAIT)
 
         pub1.start()
@@ -106,8 +107,6 @@ class TestPubSub(NIOBlockTestCase):
         pub1.stop()
         pub2.stop()
         sub.stop()
-
-        CommunicationModule.module_finalize()
 
     def test_subscribe_partial_match(self):
         pub = Publisher()
@@ -147,7 +146,6 @@ class TestPubSub(NIOBlockTestCase):
             ]
         })
 
-        CommunicationModule.module_init(self._configuration)
         sleep(OPEN_CLOSE_SLEEP_WAIT)
 
         pub.start()
@@ -167,4 +165,3 @@ class TestPubSub(NIOBlockTestCase):
         sub1.stop()
         sub2.stop()
         sub3.stop()
-        CommunicationModule.module_finalize()
