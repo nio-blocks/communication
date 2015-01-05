@@ -1,4 +1,3 @@
-from nioext.modules.communication.zmq.tests import OPEN_CLOSE_SLEEP_WAIT
 from ..publisher import Publisher
 from ..subscriber import Subscriber
 from nio.configuration import Configuration
@@ -11,6 +10,7 @@ from nio.modules.communication import CommunicationModule
 
 
 MATCHING = 'nio.modules.communication.matching.default.DefaultMatching'
+OPEN_CLOSE_SLEEP_WAIT = 1
 
 
 class TestPubSub(NIOBlockTestCase):
