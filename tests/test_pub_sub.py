@@ -1,12 +1,8 @@
 from ..publisher import Publisher
 from ..subscriber import Subscriber
-from nio.configuration import Configuration
-from nioext.components.communication.manager import CommManager
-from nio.core.context import InitContext
 from nio.modules.threading import sleep
 from nio.util.attribute_dict import AttributeDict
 from nio.util.support.block_test_case import NIOBlockTestCase
-from nio.modules.communication import CommunicationModule
 
 
 MATCHING = 'nio.modules.communication.matching.default.DefaultMatching'
@@ -20,9 +16,6 @@ class TestPubSub(NIOBlockTestCase):
     
     def setUp(self):
         super().setUp()
-        self._comm_manager = CommManager()
-        self._comm_manager.configure(InitContext([], Configuration.empty()))
-        self._comm_manager.start()
         sleep(OPEN_CLOSE_SLEEP_WAIT)
         self._configuration = AttributeDict(
             {"communication": "zmq",
@@ -30,10 +23,6 @@ class TestPubSub(NIOBlockTestCase):
              "xpub_port": 9000,
              "xsub_port": 9001,
              "ZMQ_MAX_IO_THREAD_COUNT": 1})
-
-    def tearDown(self):
-        self._comm_manager.stop()
-        super().tearDown()
 
     def test_pub_sub(self):
         pub = Publisher()
