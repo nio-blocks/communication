@@ -1,5 +1,6 @@
 from nio.common.versioning.dependency import DependsOn
 from nio.common.discovery import Discoverable, DiscoverableType
+from nio.metadata.properties import StringProperty
 from nio.modules.communication.subscriber import Subscriber as NIOSubscriber
 from .topics import TopicsBlock
 
@@ -17,6 +18,7 @@ class Subscriber(TopicsBlock):
             with a matching type.
 
     """
+    matching_provider = StringProperty(title='Matching Provider', default='')
 
     def __init__(self):
         super().__init__()
@@ -24,8 +26,10 @@ class Subscriber(TopicsBlock):
 
     def configure(self, context):
         super().configure(context)
-        self._subscriber = NIOSubscriber(self.process_signals,
-                                         **self._flatten_topics())
+        self._subscriber = \
+            NIOSubscriber(self.process_signals,
+                          matching_provider=self.matching_provider,
+                          **self._flatten_topics())
 
     def start(self):
         """ Start the block by opening the underlying subscriber

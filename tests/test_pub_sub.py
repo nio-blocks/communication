@@ -5,7 +5,6 @@ from nio.util.attribute_dict import AttributeDict
 from nio.util.support.block_test_case import NIOBlockTestCase
 
 
-MATCHING = 'nio.modules.communication.matching.default.DefaultMatching'
 OPEN_CLOSE_SLEEP_WAIT = 1
 
 
@@ -18,11 +17,8 @@ class TestPubSub(NIOBlockTestCase):
         super().setUp()
         sleep(OPEN_CLOSE_SLEEP_WAIT)
         self._configuration = AttributeDict(
-            {"communication": "zmq",
-             "matching": MATCHING,
-             "xpub_port": 9000,
-             "xsub_port": 9001,
-             "ZMQ_MAX_IO_THREAD_COUNT": 1})
+            {"xpub_port": 9000,
+             "xsub_port": 9001})
 
     def test_pub_sub(self):
         pub = Publisher()
