@@ -2,13 +2,13 @@ from ..publisher import Publisher
 from ..subscriber import Subscriber
 from nio.modules.threading import sleep
 from nio.util.attribute_dict import AttributeDict
-from nio.util.support.block_test_case import NIOBlockTestCase
+from nioext.util.support.block_test_case import NIOExtBlockTestCase
 
 
 OPEN_CLOSE_SLEEP_WAIT = 1
 
 
-class TestPubSub(NIOBlockTestCase):
+class TestPubSub(NIOExtBlockTestCase):
 
     def get_test_modules(self):
         return super().get_test_modules() + ['communication']
