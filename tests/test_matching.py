@@ -1,6 +1,7 @@
 from ..publisher import Publisher
 from ..subscriber import Subscriber
 from nio.modules.threading import sleep
+from nio.modules.communication import PortManager
 from nio.util.attribute_dict import AttributeDict
 from nioext.util.support.block_test_case import NIOExtBlockTestCase
 
@@ -13,12 +14,18 @@ class TestMatching(NIOExtBlockTestCase):
     def get_test_modules(self):
         return super().get_test_modules() + ['communication']
     
+    def get_module_config_communication(self):
+        """ Returns configuration for communication module
+        """
+        return AttributeDict({"mode": "zmq.manager",
+                              "bind_ip_address": "127.0.0.1",
+                              "ip_address": "127.0.0.1",
+                              "xpub_port": PortManager.get_port(),
+                              "xsub_port": PortManager.get_port()})
+
     def setUp(self):
         super().setUp()
         sleep(OPEN_CLOSE_SLEEP_WAIT)
-        self._configuration = AttributeDict(
-            {"xpub_port": 9000,
-             "xsub_port": 9001})
 
     def test_loose_matching_override(self):
         """ asserts that matching algorithm can be specified as a
@@ -62,6 +69,7 @@ class TestMatching(NIOExtBlockTestCase):
         sleep(OPEN_CLOSE_SLEEP_WAIT)
 
         pub.start()
+        sleep(OPEN_CLOSE_SLEEP_WAIT)
         sub_loose.start()
         sub_default.start()
         sleep(OPEN_CLOSE_SLEEP_WAIT)
