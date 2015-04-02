@@ -17,6 +17,8 @@ Properties
 --------------
 
 -   **criteria**: Criteria to determine where to send signals.
+  -   **keyword**: (str) Key to subscribe to. Will send to all subscribers with this key that meet the **rules**
+  -   **rules**: (str, Called FilterValues): Rules that must be met by subscriber. If you have rule {KEY: [A, B]} then subscribers that have keyword=KEY and rules [], [A] or [A, B] will receieve the signal. If a rule is wrong, i.e. [A, C] then it will not receive the signal.
 
 
 Dependencies
@@ -46,7 +48,8 @@ Properties
 --------------
 
 -   **criteria**: Criteria to determine what signals to receive.
-
+  -   **keyword**: See Publisher
+  -   **rules**: See Publisher
 
 Dependencies
 ----------------
