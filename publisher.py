@@ -1,12 +1,10 @@
-from nio.common.versioning.dependency import DependsOn
-from nio.common.discovery import Discoverable, DiscoverableType
+from nio import discoverable
 from nio.modules.communication.publisher import Publisher as NIOPublisher
 from nio.modules.communication.publisher import PublisherError
 from .topics import TopicsBlock
 
 
-@DependsOn("nio.modules.communication")
-@Discoverable(DiscoverableType.block)
+@discoverable
 class Publisher(TopicsBlock):
 
     """ A block for publishing to a NIO communication channel.
@@ -42,7 +40,5 @@ class Publisher(TopicsBlock):
         """
         try:
             self._publisher.send(signals)
-        except PublisherError as e:
-            self._logger.error(
-                "While publishing: {0}: {1}".format(type(e).__name__, e)
-            )
+        except PublisherError:
+            self.logger.exception("Error publishing signals")

@@ -1,12 +1,10 @@
-from nio.common.versioning.dependency import DependsOn
-from nio.common.discovery import Discoverable, DiscoverableType
-from nio.metadata.properties import StringProperty
+from nio import discoverable
+from nio.properties import StringProperty
 from nio.modules.communication.subscriber import Subscriber as NIOSubscriber
 from .topics import TopicsBlock
 
 
-@DependsOn("nio.modules.communication")
-@Discoverable(DiscoverableType.block)
+@discoverable
 class Subscriber(TopicsBlock):
 
     """ A block for subscribing to a NIO communication channel.
@@ -28,7 +26,7 @@ class Subscriber(TopicsBlock):
         super().configure(context)
         self._subscriber = \
             NIOSubscriber(self.process_signals,
-                          matching_provider=self.matching_provider,
+                          matching_provider=self.matching_provider(),
                           **self._flatten_topics())
 
     def start(self):

@@ -1,7 +1,6 @@
-from nio.common.block.base import Block
-from nio.metadata.properties.holder import PropertyHolder
-from nio.metadata.properties.list import ListProperty
-from nio.metadata.properties.string import StringProperty
+from nio import Block
+from nio.properties import PropertyHolder, ListProperty, StringProperty
+from nio.types import StringType
 
 
 class Criterion(PropertyHolder):
@@ -15,7 +14,7 @@ class Criterion(PropertyHolder):
 
     """
     keyword = StringProperty(title='Filter Key', default='')
-    rule = ListProperty(StringProperty, 
+    rule = ListProperty(StringType,
                         title='Filter Values (list of acceptable values)')
 
 
@@ -32,7 +31,7 @@ class TopicsBlock(Block):
 
     def _flatten_topics(self):
         result = {}
-        for c in self.criteria:
+        for c in self.criteria():
             tmp = c.to_dict()
             result[tmp['keyword']] = tmp['rule']
         return result
