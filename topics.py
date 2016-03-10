@@ -15,7 +15,8 @@ class Criterion(PropertyHolder):
     """
     keyword = StringProperty(title='Filter Key', default='')
     rule = ListProperty(StringType,
-                        title='Filter Values (list of acceptable values)')
+                        title='Filter Values (list of acceptable values)',
+                        default=[])
 
 
 class TopicsBlock(Block):
@@ -27,7 +28,7 @@ class TopicsBlock(Block):
             as needed.
 
     """
-    criteria = ListProperty(Criterion, title='Topics')
+    criteria = ListProperty(Criterion, title='Topics', default=[])
 
     def _flatten_topics(self):
         result = {}
