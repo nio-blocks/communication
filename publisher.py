@@ -24,7 +24,7 @@ class Publisher(Block):
 
     def configure(self, context):
         super().configure(context)
-        self._publisher = NIOPublisher(self.topic())
+        self._publisher = NIOPublisher(topic=self.topic())
         self._publisher.open()
 
     def stop(self):
