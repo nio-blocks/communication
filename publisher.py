@@ -1,21 +1,22 @@
+from nio import Block
 from nio import discoverable
 from nio.modules.communication.publisher import Publisher as NIOPublisher
 from nio.modules.communication.publisher import PublisherError
-from .topics import TopicsBlock
+from nio.properties import StringProperty
 
 
 @discoverable
-class Publisher(TopicsBlock):
+class Publisher(Block):
 
     """ A block for publishing to a NIO communication channel.
 
     Functions regardless of communication module implementation.
 
     Properties:
-        signal_type (str): Subscribers will receive published messages
-            if their specified signal type matches.
+        topic (str): Defines topic to use to publish signals.
 
     """
+    topic = StringProperty(title='Topic')
 
     def __init__(self):
         super().__init__()
@@ -23,7 +24,7 @@ class Publisher(TopicsBlock):
 
     def configure(self, context):
         super().configure(context)
-        self._publisher = NIOPublisher(**self._flatten_topics())
+        self._publisher = NIOPublisher(topic=self.topic())
         self._publisher.open()
 
     def stop(self):
