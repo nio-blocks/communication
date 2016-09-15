@@ -1,12 +1,9 @@
 from nio import Block
-from nio import discoverable
 from nio.properties import StringProperty
 from nio.modules.communication.subscriber import Subscriber as NIOSubscriber
 
 
-@discoverable
 class Subscriber(Block):
-
     """ A block for subscribing to a NIO communication channel.
 
     Functions regardless of communication module implementation.
