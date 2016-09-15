@@ -1,13 +1,10 @@
 from nio import Block
-from nio import discoverable
 from nio.modules.communication.publisher import Publisher as NIOPublisher
 from nio.modules.communication.publisher import PublisherError
 from nio.properties import StringProperty
 
 
-@discoverable
 class Publisher(Block):
-
     """ A block for publishing to a NIO communication channel.
 
     Functions regardless of communication module implementation.
