@@ -1,24 +1,18 @@
-from nio.common.versioning.dependency import DependsOn
-from nio.common.discovery import Discoverable, DiscoverableType
-from nio.metadata.properties import StringProperty
+from nio import Block
+from nio.properties import StringProperty
 from nio.modules.communication.subscriber import Subscriber as NIOSubscriber
-from .topics import TopicsBlock
 
 
-@DependsOn("nio.modules.communication")
-@Discoverable(DiscoverableType.block)
-class Subscriber(TopicsBlock):
-
+class Subscriber(Block):
     """ A block for subscribing to a NIO communication channel.
 
     Functions regardless of communication module implementation.
 
     Properties:
-        signal_type (str): The block will subscribe to channels
-            with a matching type.
+        topic (str): Defines topic to subscribe to in order to receive signals.
 
     """
-    matching_provider = StringProperty(title='Matching Provider', default='')
+    topic = StringProperty(title='Topic')
 
     def __init__(self):
         super().__init__()
@@ -26,10 +20,8 @@ class Subscriber(TopicsBlock):
 
     def configure(self, context):
         super().configure(context)
-        self._subscriber = \
-            NIOSubscriber(self.process_signals,
-                          matching_provider=self.matching_provider,
-                          **self._flatten_topics())
+        self._subscriber = NIOSubscriber(self.process_signals,
+                                         topic=self.topic())
 
     def start(self):
         """ Start the block by opening the underlying subscriber
