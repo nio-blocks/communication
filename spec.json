@@ -1,0 +1,34 @@
+{
+  "nio/Subscriber": {
+    "Version": "1.0.0",
+    "Output": "An output signal is created when the appropriate Publishers send signals based on the *topic*.",
+    "Description": "Output signals will be created when the appropriate Publishers send signals based on the *topic*.",
+    "Category": "Communication",
+    "Commands": {},
+    "Properties": {
+      "topic": {
+        "description": "Defines topic string to subscribe to in order to receive signals."
+      }
+    },
+    "Input": "None",
+    "Dependencies": [
+      "None"
+    ]
+  },
+  "nio/Publisher": {
+    "Version": "1.0.0",
+    "Output": "None",
+    "Description": "Input signals will be sent to the appropriate Subscribers based on the *topic*.",
+    "Category": "Communication",
+    "Commands": {},
+    "Properties": {
+      "topic": {
+        "description": "Defines topic string to use to publish signals."
+      }
+    },
+    "Input": "Each input signal will be sent along to the appropriate Subscribers based on the *topic*.",
+    "Dependencies": [
+      "None"
+    ]
+  }
+}
