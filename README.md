@@ -16,7 +16,7 @@ Input signals will be sent to the appropriate Subscribers based on the *topic*.
 Properties
 --------------
 
--   **topic**: Defines topic string to use to publish signals.
+-   **topic**: Defines topic string to use to publish signals. Wildcards **not** permitted.
 
 
 Dependencies
@@ -45,7 +45,7 @@ Output signals will be created when the appropriate Publishers send signals base
 Properties
 --------------
 
--   **topic**: Defines topic string to subscribe to in order to receive signals.
+-   **topic**: Defines topic string to subscribe to in order to receive signals. Wildcards permitted!
 
 Dependencies
 ----------------
