@@ -30,16 +30,10 @@ class TestPubSub(NIOBlockTestCase):
     def test_subscriber(self):
         subscriber = Subscriber()
 
-        # assert that it needs to be configured
-        with self.assertRaises(AttributeError):
-            subscriber.process_signals([Signal()])
-
         topic = "test_topic"
         self.configure_block(subscriber, {"topic": topic})
         # assert that topic property value is now available
         self.assertEqual(subscriber.topic(), topic)
 
         subscriber.start()
-        # now it can process signals
-        subscriber.process_signals([Signal()])
         subscriber.stop()

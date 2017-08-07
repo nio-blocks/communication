@@ -1,12 +1,12 @@
 {
   "nio/Publisher": {
     "language": "Python",
-    "version": "0.0.1",
-    "reference": "github.com/nio-blocks/communication.git@v0.0.1"
+    "version": "1.0.0",
+    "reference": "github.com/nio-blocks/communication.git@v1.0.0"
   },
   "nio/Subscriber": {
     "language": "Python",
-    "version": "0.0.1",
-    "reference": "github.com/nio-blocks/communication.git@v0.0.1"
+    "version": "1.0.0",
+    "reference": "github.com/nio-blocks/communication.git@v1.0.0"
   }
 }
