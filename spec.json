@@ -1,18 +1,38 @@
 {
   "nio/Publisher": {
-    "version": "0.0.1",
-    "description": "",
-    "inputs": {},
+    "version": "1.0.0",
+    "description": "Publish input signals to the configured topic",
+    "properties": {
+      "topic": {
+        "title": "Topic",
+        "description": "Hierarchical topic string to publish to",
+        "default": null
+      }
+    },
+    "inputs": {
+      "default": {
+        "description": "Publish each list of signals"
+      }
+    },
     "outputs": {},
-    "properties": {},
     "commands": {}
   },
   "nio/Subscriber": {
-    "version": "0.0.1",
-    "description": "",
+    "version": "1.0.0",
+    "description": "Subscribe to the configured topic and output signals received",
+    "properties": {
+      "topic": {
+        "title": "Topic",
+        "description": "Hierarchical topic string to subscribe to",
+        "default": null
+      }
+    },
     "inputs": {},
-    "outputs": {},
-    "properties": {},
+    "outputs": {
+      "default": {
+        "description": "Signal list for each message received on topic"
+      }
+    },
     "commands": {}
   }
 }
