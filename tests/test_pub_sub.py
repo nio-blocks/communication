@@ -1,3 +1,5 @@
+from unittest.mock import patch, ANY
+
 from nio import Signal
 from nio.testing.block_test_case import NIOBlockTestCase
 
@@ -12,28 +14,37 @@ class TestPubSub(NIOBlockTestCase):
 
     def test_publisher(self):
         publisher = Publisher()
-
-        # assert that it needs to be configured
-        with self.assertRaises(AttributeError):
-            publisher.process_signals([Signal()])
-
         topic = "test_topic"
-        self.configure_block(publisher, {"topic": topic})
-        # assert that topic property value is now available
-        self.assertEqual(publisher.topic(), topic)
 
-        publisher.start()
-        # now it can process signals
-        publisher.process_signals([Signal()])
-        publisher.stop()
+        with patch(Publisher.__module__ + '.NioPublisher') as communication:
+            self.configure_block(publisher, {"topic": topic})
+            communication.assert_called_once_with(topic=topic)
+            communication.return_value.open.assert_called_once_with()
+
+            publisher.start()
+
+            # now it can process signals
+            signals = [Signal()]
+            publisher.process_signals(signals)
+            communication.return_value.send.assert_called_once_with(signals)
+
+            publisher.stop()
+            communication.return_value.close.assert_called_once_with()
 
     def test_subscriber(self):
         subscriber = Subscriber()
-
         topic = "test_topic"
-        self.configure_block(subscriber, {"topic": topic})
-        # assert that topic property value is now available
-        self.assertEqual(subscriber.topic(), topic)
 
-        subscriber.start()
-        subscriber.stop()
+        with patch(Subscriber.__module__ + '.NioSubscriber') as communication:
+            self.configure_block(subscriber, {"topic": topic})
+            communication.assert_called_once_with(ANY, topic=topic)
+
+            subscriber.start()
+            communication.return_value.open.assert_called_once_with()
+
+            # call the subscriber handler with a signal
+            communication.call_args[0][0]([Signal({"a": "signal"})])
+            self.assert_num_signals_notified(1)
+
+            subscriber.stop()
+            communication.return_value.close.assert_called_once_with()
