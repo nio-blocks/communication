@@ -12,7 +12,7 @@ class Subscriber(Block):
         topic (str): Defines topic to subscribe to in order to receive signals.
 
     """
-    version = VersionProperty('1.0.0')
+    version = VersionProperty('1.0.1')
     topic = StringProperty(title='Topic')
 
     def __init__(self):
@@ -21,7 +21,7 @@ class Subscriber(Block):
 
     def configure(self, context):
         super().configure(context)
-        self._subscriber = NioSubscriber(self.process_signals,
+        self._subscriber = NioSubscriber(self._subscriber_handler,
                                          topic=self.topic())
 
     def start(self):
@@ -33,3 +33,6 @@ class Subscriber(Block):
         """ Stop the block by closing the underlying subscriber """
         self._subscriber.close()
         super().stop()
+
+    def _subscriber_handler(self, signals):
+        self.notify_signals(signals)

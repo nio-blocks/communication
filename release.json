@@ -6,7 +6,7 @@
   },
   "nio/Subscriber": {
     "language": "Python",
-    "version": "1.0.0",
-    "reference": "github.com/nio-blocks/communication.git@v1.0.0"
+    "version": "1.0.1",
+    "reference": "github.com/nio-blocks/communication.git@v1.0.1"
   }
 }
