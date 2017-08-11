@@ -1,64 +1,104 @@
-Communication
-=======
+LocalPublisher
+==============
+Publish input signals to the configured topic. Only LocalSubscriber blocks on the same nio instance can subscribe to this data. Unlike the regular Publisher block, these signals do not need to contain data this is valid JSON.
 
-Publisher and Subscriber blocks to send signals between Services and nio Instances.
+Properties
+----------
+- **local_identifier**: Unique identifier of this instance in the nio system.
+- **topic**: Hierarchical topic string to publish to
 
--   [Publisher](https://github.com/nio-blocks/communication#publisher)
--   [Subscriber](https://github.com/nio-blocks/communication#subscriber)
+Inputs
+------
+- **default**: 
+
+Outputs
+-------
+
+Commands
+--------
+
+***
+
+LocalSubscriber
+===============
+Subscribe to the configured topic and output signals received. Only LocalSubscriber blocks on the same nio instance can subscribe to this data. Unlike the regular Publisher block, these signals do not need to contain data this is valid JSON.
+
+Properties
+----------
+- **local_identifier**: Unique identifier of this instance in the nio system.
+- **topic**: Hierarchical topic string to publish to
+
+Inputs
+------
+
+Outputs
+-------
+- **default**: 
+
+Commands
+--------
 
 ***
 
 Publisher
-===========
-
-Input signals will be sent to the appropriate Subscribers based on the *topic*.
+=========
+Publish input signals to the configured topic
 
 Properties
---------------
+----------
+- **topic**: Hierarchical topic string to publish to
 
--   **topic**: Defines topic string to use to publish signals. Wildcards **not** permitted.
+Inputs
+------
+- **default**: Publish each list of signals
 
-
-Dependencies
-----------------
-None
+Outputs
+-------
 
 Commands
-----------------
+--------
+
+Dependencies
+------------
 None
 
 Input
--------
+-----
 Each input signal will be sent along to the appropriate Subscribers based on the *topic*.
 
 Output
----------
+------
 None
 
 ***
 
 Subscriber
-===========
-
-Output signals will be created when the appropriate Publishers send signals based on the *topic*.
+==========
+Subscribe to the configured topic and output signals received
 
 Properties
---------------
+----------
+- **topic**: Hierarchical topic string to subscribe to
 
--   **topic**: Defines topic string to subscribe to in order to receive signals. Wildcards permitted!
+Inputs
+------
 
-Dependencies
-----------------
-None
+Outputs
+-------
+- **default**: Signal list for each message received on topic
 
 Commands
-----------------
+--------
+
+Dependencies
+------------
 None
 
 Input
--------
+-----
 None
 
 Output
----------
+------
 An output signal is created when the appropriate Publishers send signals based on the *topic*.
+
