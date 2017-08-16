@@ -2,21 +2,21 @@
   "nio/LocalPublisher": {
     "language": "Python",
     "version": "0.1.0",
-    "reference": "github.com/nio-blocks/communication.git@v0.1.0"
+    "url": "git://github.com/nio-blocks/communication.git"
   },
   "nio/LocalSubscriber": {
     "language": "Python",
     "version": "0.1.0",
-    "reference": "github.com/nio-blocks/communication.git@v0.1.0"
+    "url": "git://github.com/nio-blocks/communication.git"
   },
   "nio/Publisher": {
     "language": "Python",
     "version": "1.0.0",
-    "reference": "github.com/nio-blocks/communication.git@v1.0.0"
+    "url": "git://github.com/nio-blocks/communication.git"
   },
   "nio/Subscriber": {
     "language": "Python",
     "version": "1.0.1",
-    "reference": "github.com/nio-blocks/communication.git@v1.0.1"
+    "url": "git://github.com/nio-blocks/communication.git"
   }
 }
