@@ -1,10 +1,10 @@
-from nio import TerminatorBlock
+from nio import Block
 from nio.modules.communication.publisher import Publisher as NioPublisher
 from nio.modules.communication.publisher import PublisherError
 from nio.properties import StringProperty, VersionProperty
 
 
-class Publisher(TerminatorBlock):
+class Publisher(Block):
     """ A block for publishing to a nio communication channel.
 
     Functions regardless of communication module implementation.

@@ -1,14 +1,14 @@
 from base64 import b64encode
 import pickle
 
-from nio import TerminatorBlock
+from nio import Block
 from nio import Signal
 from nio.modules.communication.publisher import Publisher as NioPublisher
 from nio.modules.communication.publisher import PublisherError
 from nio.properties import StringProperty, VersionProperty
 
 
-class LocalPublisher(TerminatorBlock):
+class LocalPublisher(Block):
     """ A block for publishing to a local nio communication channel.
 
     Functions regardless of communication module implementation.
