@@ -1,12 +1,12 @@
 from base64 import b64decode
 import pickle
 
-from nio import Block
+from nio import GeneratorBlock
 from nio.modules.communication.subscriber import Subscriber as NioSubscriber
 from nio.properties import StringProperty, VersionProperty
 
 
-class LocalSubscriber(Block):
+class LocalSubscriber(GeneratorBlock):
     """ A block for subscribing to a local nio communication channel.
 
     Functions regardless of communication module implementation.
