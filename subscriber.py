@@ -1,9 +1,9 @@
-from nio import Block
+from nio import GeneratorBlock
 from nio.modules.communication.subscriber import Subscriber as NioSubscriber
 from nio.properties import StringProperty, VersionProperty
 
 
-class Subscriber(Block):
+class Subscriber(GeneratorBlock):
     """ A block for subscribing to a nio communication channel.
 
     Functions regardless of communication module implementation.
