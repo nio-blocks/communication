@@ -9,15 +9,19 @@ Properties
 
 Inputs
 ------
-- **default**: 
+- **default**: Any list of signals.
 
 Outputs
 -------
+None
 
 Commands
 --------
+None
 
-***
+Dependencies
+------------
+None
 
 LocalSubscriber
 ===============
@@ -30,15 +34,19 @@ Properties
 
 Inputs
 ------
+None
 
 Outputs
 -------
-- **default**: 
+- **default**: A signal of the message published to the configured topic.
 
 Commands
 --------
+None
 
-***
+Dependencies
+------------
+None
 
 Publisher
 =========
@@ -50,27 +58,19 @@ Properties
 
 Inputs
 ------
-- **default**: Publish each list of signals
+- **default**: Each input signal will be sent along to the appropriate Subscribers based on the *topic*.
 
 Outputs
 -------
+None
 
 Commands
 --------
+None
 
 Dependencies
 ------------
 None
-
-Input
------
-Each input signal will be sent along to the appropriate Subscribers based on the *topic*.
-
-Output
-------
-None
-
-***
 
 Subscriber
 ==========
@@ -82,6 +82,7 @@ Properties
 
 Inputs
 ------
+None
 
 Outputs
 -------
@@ -89,16 +90,9 @@ Outputs
 
 Commands
 --------
+None
 
 Dependencies
 ------------
 None
-
-Input
------
-None
-
-Output
-------
-An output signal is created when the appropriate Publishers send signals based on the *topic*.
 

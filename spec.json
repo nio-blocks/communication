@@ -21,7 +21,7 @@
     },
     "inputs": {
       "default": {
-        "description": ""
+        "description": "Any list of signals."
       }
     },
     "outputs": {},
@@ -50,7 +50,7 @@
     "inputs": {},
     "outputs": {
       "default": {
-        "description": ""
+        "description": "A signal of the message published to the configured topic."
       }
     },
     "commands": {}
@@ -71,7 +71,7 @@
     },
     "inputs": {
       "default": {
-        "description": "Publish each list of signals"
+        "description": "Each input signal will be sent along to the appropriate Subscribers based on the *topic*."
       }
     },
     "outputs": {},
