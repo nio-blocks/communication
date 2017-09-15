@@ -13,7 +13,7 @@ class LocalSubscriber(GeneratorBlock):
 
     Unlike the regular Subscriber block, the one does not need data to be json
     """
-    version = VersionProperty('0.1.0')
+    version = VersionProperty("0.1.1")
     topic = StringProperty(title='Topic', default="")
     local_identifier = StringProperty(
         title='Local Identifier', default='[[INSTANCE_ID]]', visible=False)
