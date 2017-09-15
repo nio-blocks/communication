@@ -1,6 +1,6 @@
 {
   "nio/LocalPublisher": {
-    "version": "0.1.0",
+    "version": "0.1.1",
     "description": "Publish input signals to the configured topic. Only LocalSubscriber blocks on the same nio instance can subscribe to this data. Unlike the regular Publisher block, these signals do not need to contain data this is valid JSON.",
     "categories": [
       "Communication"
