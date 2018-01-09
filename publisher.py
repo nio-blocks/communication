@@ -13,7 +13,7 @@ class Publisher(TerminatorBlock):
         topic (str): Defines topic to use to publish signals.
 
     """
-    version = VersionProperty('1.0.0')
+    version = VersionProperty("1.0.2")
     topic = StringProperty(title='Topic')
 
     def __init__(self):

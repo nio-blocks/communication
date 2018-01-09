@@ -56,7 +56,7 @@
     "commands": {}
   },
   "nio/Publisher": {
-    "version": "1.0.0",
+    "version": "1.0.2",
     "description": "The Publisher block sends incoming signals to the configured topic. Topics can be static or dynamic bassed on the first signal in a list of signals.",
     "categories": [
       "Communication"
