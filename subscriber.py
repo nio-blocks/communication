@@ -12,7 +12,7 @@ class Subscriber(GeneratorBlock):
         topic (str): Defines topic to subscribe to in order to receive signals.
 
     """
-    version = VersionProperty('1.0.1')
+    version = VersionProperty("1.0.2")
     topic = StringProperty(title='Topic')
 
     def __init__(self):

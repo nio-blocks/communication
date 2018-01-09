@@ -78,7 +78,7 @@
     "commands": {}
   },
   "nio/Subscriber": {
-    "version": "1.0.1",
+    "version": "1.0.2",
     "description": "The Subscriber block reads data from the configured topic and output signals received.",
     "categories": [
       "Communication"
