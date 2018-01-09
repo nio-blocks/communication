@@ -1,11 +1,11 @@
 LocalPublisher
 ==============
-Publish input signals to the configured topic. Only LocalSubscriber blocks on the same nio instance can subscribe to this data. Unlike the regular Publisher block, these signals do not need to contain data this is valid JSON.
+The LocalPublisher publishes incoming signals to the configured topic. Topics can be static or dynamic bassed on the first signal in a list of signals. Only LocalSubscriber blocks on the same nio instance can subscribe to this data. Unlike the regular [Publisher block](https://blocks.n.io/Publisher), these signals do not need to contain data that is valid JSON.
 
 Properties
 ----------
-- **local_identifier**: Unique identifier of this instance in the nio system.
-- **topic**: Hierarchical topic string to publish to
+- **local_identifier**: Hidden property with a default of `[[INSTANCE_ID]]. Unique identifier of this instance in the nio system.
+- **topic**: Hierarchical topic string to publish to.
 
 Inputs
 ------
@@ -23,14 +23,16 @@ Dependencies
 ------------
 None
 
+***
+
 LocalSubscriber
 ===============
-Subscribe to the configured topic and output signals received. Only LocalSubscriber blocks on the same nio instance can subscribe to this data. Unlike the regular Publisher block, these signals do not need to contain data this is valid JSON.
+The LocalSubscriber block subscribes to the configured topic and outputs signals received. Only LocalPublisher blocks on the same nio instance can send data to the block. Unlike the regular [Subscriber block](https://blocks.n.io/Subscriber), these signals do not need to contain data that is valid JSON.
 
 Properties
 ----------
-- **local_identifier**: Unique identifier of this instance in the nio system.
-- **topic**: Hierarchical topic string to publish to
+- **local_identifier**: Hidden property with a default of `[[INSTANCE_ID]]. Unique identifier of this instance in the nio system.
+- **topic**: Hierarchical topic string to subscribe to.
 
 Inputs
 ------
@@ -48,13 +50,15 @@ Dependencies
 ------------
 None
 
+***
+
 Publisher
 =========
-Publish input signals to the configured topic
+The Publisher block sends incoming signals to the configured topic. Topics can be static or dynamic bassed on the first signal in a list of signals.
 
 Properties
 ----------
-- **topic**: Hierarchical topic string to publish to
+- **topic**: Hierarchical topic string to publish to.
 
 Inputs
 ------
@@ -72,13 +76,15 @@ Dependencies
 ------------
 None
 
+***
+
 Subscriber
 ==========
-Subscribe to the configured topic and output signals received
+The Subscriber block reads data from the configured topic and output signals received.
 
 Properties
 ----------
-- **topic**: Hierarchical topic string to subscribe to
+- **topic**: Hierarchical topic string to subscribe to.
 
 Inputs
 ------
@@ -86,7 +92,7 @@ None
 
 Outputs
 -------
-- **default**: Signal list for each message received on topic
+- **default**: Signal list for each message received on topic.
 
 Commands
 --------
