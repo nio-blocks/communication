@@ -1,6 +1,6 @@
 {
   "nio/LocalPublisher": {
-    "version": "0.1.1",
+    "version": "0.1.2",
     "description": "The LocalPublisher publishes incoming signals to the configured topic. Topics can be static or dynamic bassed on the first signal in a list of signals. Only LocalSubscriber blocks on the same nio instance can subscribe to this data. Unlike the regular [Publisher block](https://blocks.n.io/Publisher), these signals do not need to contain data that is valid JSON.",
     "categories": [
       "Communication"
