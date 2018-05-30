@@ -2,8 +2,10 @@ from nio import GeneratorBlock
 from nio.modules.communication.subscriber import Subscriber as NioSubscriber
 from nio.properties import StringProperty, VersionProperty
 
+from .connectivity import PubSubConnectivity
 
-class Subscriber(GeneratorBlock):
+
+class Subscriber(PubSubConnectivity, GeneratorBlock):
     """ A block for subscribing to a nio communication channel.
 
     Functions regardless of communication module implementation.
@@ -27,10 +29,14 @@ class Subscriber(GeneratorBlock):
     def start(self):
         """ Start the block by opening the underlying subscriber """
         super().start()
-        self._subscriber.open()
+        self._subscriber.open(on_connected=self.conn_on_connected,
+                              on_disconnected=self.conn_on_disconnected)
+        # let connectivity configure
+        self.conn_configure(self._subscriber.is_connected)
 
     def stop(self):
         """ Stop the block by closing the underlying subscriber """
+        self.conn_stop()
         self._subscriber.close()
         super().stop()
 
