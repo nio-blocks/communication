@@ -19,7 +19,7 @@ class TestPubSub(NIOBlockTestCase):
         with patch(Publisher.__module__ + '.NioPublisher') as communication:
             self.configure_block(publisher, {"topic": topic})
             communication.assert_called_once_with(topic=topic)
-            communication.return_value.open.assert_called_once()
+            self.assertEqual(communication.return_value.open.call_count, 1)
 
             publisher.start()
 
@@ -40,7 +40,7 @@ class TestPubSub(NIOBlockTestCase):
             communication.assert_called_once_with(ANY, topic=topic)
 
             subscriber.start()
-            communication.return_value.open.assert_called_once()
+            self.assertEqual(communication.return_value.open.call_count, 1)
 
             # call the subscriber handler with a signal
             communication.call_args[0][0]([Signal({"a": "signal"})])

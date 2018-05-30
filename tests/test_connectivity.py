@@ -43,23 +43,24 @@ class TestConnectivity(NIOBlockTestCase):
             job_patch.return_value = job_instance
             connectivity.conn_configure(is_connected)
             self.assertFalse(connectivity._connected)
-            connectivity._connected_event.wait.assert_called_once()
-            connectivity.notify_management_signal.assert_called_once()
-            job_patch.assert_called_once()
+            self.assertEqual(connectivity._connected_event.wait.call_count, 1)
+            self.assertEqual(
+                connectivity.notify_management_signal.call_count, 1)
+            self.assertEqual(job_patch.call_count, 1)
 
             # simulate restoring connection
             connectivity.conn_on_connected()
             self.assertTrue(connectivity._connected)
-            job_instance.cancel.assert_called_once()
-            connectivity._connected_event.set.assert_called_once()
+            self.assertEqual(job_instance.cancel.call_count, 1)
+            self.assertEqual(connectivity._connected_event.set.call_count, 1)
             self.assertEqual(
                 connectivity.notify_management_signal.call_count, 2)
 
             # simulate losing connection
             connectivity.conn_on_disconnected()
             self.assertFalse(connectivity._connected)
-            connectivity._connected_event.clear.assert_called_once()
-            job_instance.cancel.assert_called_once()
+            self.assertEqual(connectivity._connected_event.clear.call_count, 1)
+            self.assertEqual(job_instance.cancel.call_count, 1)
             self.assertEqual(
                 connectivity.notify_management_signal.call_count, 3)
 
