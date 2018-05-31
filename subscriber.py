@@ -25,10 +25,6 @@ class Subscriber(PubSubConnectivity, GeneratorBlock):
         super().configure(context)
         self._subscriber = NioSubscriber(self._subscriber_handler,
                                          topic=self.topic())
-
-    def start(self):
-        """ Start the block by opening the underlying subscriber """
-        super().start()
         self._subscriber.open(on_connected=self.conn_on_connected,
                               on_disconnected=self.conn_on_disconnected)
         # let connectivity configure
