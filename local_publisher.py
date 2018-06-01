@@ -30,8 +30,17 @@ class LocalPublisher(PubSubConnectivity, TerminatorBlock):
         super().configure(context)
         self._publisher = NioPublisher(
             topic="{}.{}".format(self.local_identifier(), self.topic()))
-        self._publisher.open(on_connected=self.conn_on_connected,
-                             on_disconnected=self.conn_on_disconnected)
+
+        try:
+            self._publisher.open(on_connected=self.conn_on_connected,
+                                 on_disconnected=self.conn_on_disconnected)
+        except TypeError as e:
+            self.logger.warning(
+                "Connecting to an outdated communication module, {}".
+                format(str(e)))
+            # try previous interface
+            self._publisher.open()
+
         self.conn_configure(self._publisher.is_connected)
 
     def stop(self):

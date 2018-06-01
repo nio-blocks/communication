@@ -15,6 +15,7 @@ class PubSubConnectivity(object):
 
     def __init__(self):
         super().__init__()
+        self._conn_status = RunnerStatus.created
         self._connected = None
         self._connected_lock = RLock()
         self._timeout_job = None
@@ -29,12 +30,14 @@ class PubSubConnectivity(object):
             is_connected (callable): function to invoke to establish initial
                 connectivity status
         """
+        self._conn_status = RunnerStatus.configuring
         with self._connected_lock:
-            self._connected = is_connected()
+            connected = is_connected()
             self.logger.info("Starting in: '{}' state".format(
-                "connected" if self._connected else "disconnected"))
+                "connected" if connected else "disconnected"))
+            self._connected = connected
 
-        if not self._connected:
+        if not connected:
             # per spec, hold the configure method hoping to get connected
             if not self._connected_event.wait(self.timeout().total_seconds()):
                 self._notify_disconnection(RunnerStatus.warning)
@@ -42,17 +45,19 @@ class PubSubConnectivity(object):
                 self._timeout_job = Job(self._notify_disconnection,
                                         self.timeout(), False,
                                         RunnerStatus.error)
+        self._conn_status = RunnerStatus.configured
 
     def conn_stop(self):
+        self._conn_status = RunnerStatus.stopping
         # cancel existing timeout job if any
         if self._timeout_job:
             self._timeout_job.cancel()  # pragma no cover
+        self._conn_status = RunnerStatus.stopped
 
     def conn_on_connected(self):
-        # remove any possible wait for on_connected event
-        self._connected_event.set()
-
         with self._connected_lock:
+            # remove any possible wait for on_connected event
+            self._connected_event.set()
             self._connected = True
 
         # cancel existing timeout job if any
@@ -68,8 +73,12 @@ class PubSubConnectivity(object):
             self.notify_management_signal(signal)
 
     def conn_on_disconnected(self):
-        self._connected_event.clear()
+        # ignore disconnections when stopping/stopped
+        if self._conn_status in (RunnerStatus.stopping, RunnerStatus.stopped):
+            return
+
         with self._connected_lock:
+            self._connected_event.clear()
             self._connected = False
         self._notify_disconnection(RunnerStatus.warning)
 

@@ -29,8 +29,17 @@ class LocalSubscriber(PubSubConnectivity, GeneratorBlock):
         self._subscriber = NioSubscriber(
             self._subscriber_handler,
             topic="{}.{}".format(self.local_identifier(), self.topic()))
-        self._subscriber.open(on_connected=self.conn_on_connected,
-                              on_disconnected=self.conn_on_disconnected)
+
+        try:
+            self._subscriber.open(on_connected=self.conn_on_connected,
+                                  on_disconnected=self.conn_on_disconnected)
+        except TypeError as e:
+            self.logger.warning(
+                "Connecting to an outdated communication module, {}".
+                format(str(e)))
+            # try previous interface
+            self._subscriber.open()
+
         # let connectivity configure
         self.conn_configure(self._subscriber.is_connected)
 
