@@ -40,6 +40,8 @@ class LocalPublisher(PubSubConnectivity, TerminatorBlock):
                 format(str(e)))
             # try previous interface
             self._publisher.open()
+            # no need to configure connectivity if not supported
+            return
 
         self.conn_configure(self._publisher.is_connected)
 

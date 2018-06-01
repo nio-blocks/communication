@@ -35,6 +35,8 @@ class Subscriber(PubSubConnectivity, GeneratorBlock):
                 format(str(e)))
             # try previous interface
             self._subscriber.open()
+            # no need to configure connectivity if not supported
+            return
 
         # let connectivity configure
         self.conn_configure(self._subscriber.is_connected)
