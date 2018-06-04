@@ -31,8 +31,7 @@ class Subscriber(PubSubConnectivity, GeneratorBlock):
                                   on_disconnected=self.conn_on_disconnected)
         except TypeError as e:
             self.logger.warning(
-                "Connecting to an outdated communication module, {}".
-                format(str(e)))
+                "Connecting to an outdated communication module")
             # try previous interface
             self._subscriber.open()
             # no need to configure connectivity if not supported

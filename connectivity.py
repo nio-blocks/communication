@@ -15,7 +15,6 @@ class PubSubConnectivity(object):
 
     def __init__(self):
         super().__init__()
-        self._conn_status = RunnerStatus.created
         self._connected = None
         self._connected_lock = RLock()
         self._timeout_job = None
@@ -30,7 +29,6 @@ class PubSubConnectivity(object):
             is_connected (callable): function to invoke to establish initial
                 connectivity status
         """
-        self._conn_status = RunnerStatus.configuring
         with self._connected_lock:
             connected = is_connected()
             self.logger.info("Starting in: '{}' state".format(
@@ -45,14 +43,11 @@ class PubSubConnectivity(object):
                 self._timeout_job = Job(self._notify_disconnection,
                                         self.timeout(), False,
                                         RunnerStatus.error)
-        self._conn_status = RunnerStatus.configured
 
     def conn_stop(self):
-        self._conn_status = RunnerStatus.stopping
         # cancel existing timeout job if any
         if self._timeout_job:
             self._timeout_job.cancel()  # pragma no cover
-        self._conn_status = RunnerStatus.stopped
 
     def conn_on_connected(self):
         with self._connected_lock:
@@ -74,7 +69,8 @@ class PubSubConnectivity(object):
 
     def conn_on_disconnected(self):
         # ignore disconnections when stopping/stopped
-        if self._conn_status in (RunnerStatus.stopping, RunnerStatus.stopped):
+        if self.status.is_set(RunnerStatus.stopping) or \
+           self.status.is_set(RunnerStatus.stopped):
             return
 
         with self._connected_lock:
