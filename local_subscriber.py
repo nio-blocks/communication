@@ -46,7 +46,6 @@ class LocalSubscriber(PubSubConnectivity, GeneratorBlock):
 
     def stop(self):
         """ Stop the block by closing the underlying subscriber """
-        self.conn_stop()
         self._subscriber.close()
         super().stop()
 

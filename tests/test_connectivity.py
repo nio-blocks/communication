@@ -1,8 +1,13 @@
-from unittest.mock import Mock, patch
+from unittest.mock import Mock
 
+from nio.block.base import Base
 from nio.testing.block_test_case import NIOBlockTestCase
 
 from ..connectivity import PubSubConnectivity
+
+
+class MyPubSubConnectivity(PubSubConnectivity, Base):
+    pass
 
 
 class TestConnectivity(NIOBlockTestCase):
@@ -11,7 +16,8 @@ class TestConnectivity(NIOBlockTestCase):
         return super().get_test_modules() | {'communication'}
 
     def test_connected(self):
-        connectivity = PubSubConnectivity()
+        connectivity = MyPubSubConnectivity()
+
         # setup mocks
         connectivity.logger = Mock()
         connectivity._connected_event = Mock()
@@ -19,49 +25,40 @@ class TestConnectivity(NIOBlockTestCase):
         connectivity._notify_disconnection = Mock()
         is_connected = Mock(return_value=True)
 
-        with patch(PubSubConnectivity.__module__ + '.Job') as job_patch:
-            connectivity.conn_configure(is_connected)
-            self.assertTrue(connectivity._connected)
-            # no waiting, notification, etc.
-            self.assertEqual(connectivity._connected_event.wait.call_count, 0)
-            self.assertEqual(connectivity._notify_disconnection.call_count, 0)
-            self.assertEqual(job_patch.call_count, 0)
+        connectivity.conn_configure(is_connected)
+        self.assertTrue(connectivity._connected)
+        # no waiting, notification, etc.
+        self.assertEqual(connectivity._connected_event.wait.call_count, 0)
+        self.assertEqual(connectivity._notify_disconnection.call_count, 0)
 
-    def test_disconnected_start(self):
-        connectivity = PubSubConnectivity()
+    def test_disconnections(self):
+        connectivity = MyPubSubConnectivity()
         # setup mocks
         connectivity.logger = Mock()
-        connectivity.status = Mock()
         connectivity._connected_event = Mock()
         connectivity._connected_event.wait = Mock(return_value=False)
         connectivity.notify_management_signal = Mock()
         # not connected during configure
         is_connected = Mock(return_value=False)
 
-        with patch(PubSubConnectivity.__module__ + '.Job') as job_patch:
-            job_instance = Mock()
-            job_patch.return_value = job_instance
-            connectivity.conn_configure(is_connected)
-            self.assertFalse(connectivity._connected)
-            self.assertEqual(connectivity._connected_event.wait.call_count, 1)
-            self.assertEqual(
-                connectivity.notify_management_signal.call_count, 1)
-            self.assertEqual(job_patch.call_count, 1)
+        connectivity.conn_configure(is_connected)
+        self.assertFalse(connectivity._connected)
+        self.assertEqual(connectivity._connected_event.wait.call_count, 1)
+        self.assertEqual(connectivity.notify_management_signal.call_count, 1)
 
-            # simulate restoring connection
-            connectivity.conn_on_connected()
-            self.assertTrue(connectivity._connected)
-            self.assertEqual(job_instance.cancel.call_count, 1)
-            self.assertEqual(connectivity._connected_event.set.call_count, 1)
-            self.assertEqual(
-                connectivity.notify_management_signal.call_count, 2)
+        # simulate restoring connection
+        connectivity.conn_on_connected()
+        self.assertTrue(connectivity._connected)
+        self.assertEqual(connectivity._connected_event.set.call_count, 1)
+        self.assertEqual(connectivity.notify_management_signal.call_count, 2)
 
-            # simulate losing connection
-            connectivity.conn_on_disconnected()
-            self.assertFalse(connectivity._connected)
-            self.assertEqual(connectivity._connected_event.clear.call_count, 1)
-            self.assertEqual(job_instance.cancel.call_count, 1)
-            self.assertEqual(
-                connectivity.notify_management_signal.call_count, 3)
+        # simulate losing connection
+        connectivity.conn_on_disconnected()
+        self.assertFalse(connectivity._connected)
+        self.assertEqual(connectivity._connected_event.clear.call_count, 1)
+        self.assertEqual(connectivity.notify_management_signal.call_count, 3)
 
-            connectivity.conn_stop()
+    def test_invalid_block(self):
+        # Assert that must be a block instance
+        with self.assertRaises(ValueError):
+            PubSubConnectivity()

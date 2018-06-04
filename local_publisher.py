@@ -46,7 +46,6 @@ class LocalPublisher(PubSubConnectivity, TerminatorBlock):
 
     def stop(self):
         """ Stop the block by closing the underlying publisher """
-        self.conn_stop()
         self._publisher.close()
         super().stop()
 

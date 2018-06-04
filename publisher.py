@@ -1,4 +1,4 @@
-from nio import TerminatorBlock
+from nio import TerminatorBlock, Block
 from nio.modules.communication.publisher import Publisher as NioPublisher
 from nio.modules.communication.publisher import PublisherError
 from nio.properties import StringProperty, VersionProperty
@@ -41,7 +41,6 @@ class Publisher(PubSubConnectivity, TerminatorBlock):
 
     def stop(self):
         """ Stop the block by closing the underlying publisher """
-        self.conn_stop()
         self._publisher.close()
         super().stop()
 
