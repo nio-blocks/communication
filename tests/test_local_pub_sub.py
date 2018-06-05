@@ -25,7 +25,7 @@ class TestLocalPubSub(NIOBlockTestCase):
                 publisher, {"topic": topic, "local_identifier": instance_id})
             communication.assert_called_once_with(
                 topic="{}.{}".format(instance_id, topic))
-            communication.return_value.open.assert_called_once_with()
+            self.assertEqual(communication.return_value.open.call_count, 1)
 
             publisher.start()
 
@@ -57,7 +57,7 @@ class TestLocalPubSub(NIOBlockTestCase):
                 ANY, topic="{}.{}".format(instance_id, topic))
 
             subscriber.start()
-            communication.return_value.open.assert_called_once_with()
+            self.assertEqual(communication.return_value.open.call_count, 1)
 
             # call the subscriber handler with a signal and then check that
             # signals are notified for decoded, unpickled result
