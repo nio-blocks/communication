@@ -1,6 +1,6 @@
 {
   "nio/LocalPublisher": {
-    "version": "0.1.2",
+    "version": "1.1.0",
     "description": "The LocalPublisher publishes incoming signals to the configured topic. Topics can be static or dynamic bassed on the first signal in a list of signals. Only LocalSubscriber blocks on the same nio instance can subscribe to this data. Unlike the regular [Publisher block](https://blocks.n.io/Publisher), these signals do not need to contain data that is valid JSON.",
     "categories": [
       "Communication"
@@ -8,12 +8,27 @@
     "properties": {
       "local_identifier": {
         "title": "Local Identifier",
+        "advanced": true,
+        "order": null,
         "type": "StringType",
         "description": "Hidden property with a default of `[[INSTANCE_ID]]. Unique identifier of this instance in the nio system.",
         "default": "[[INSTANCE_ID]]"
       },
+      "timeout": {
+        "type": "TimeDeltaType",
+        "title": "Connect Timeout",
+        "advanced": true,
+        "order": null,
+        "visible": true,
+        "allow_none": false,
+        "default": {
+          "seconds": 2
+        }
+      },
       "topic": {
         "title": "Topic",
+        "advanced": true,
+        "order": null,
         "type": "StringType",
         "description": "Hierarchical topic string to publish to.",
         "default": ""
@@ -28,7 +43,7 @@
     "commands": {}
   },
   "nio/LocalSubscriber": {
-    "version": "0.1.2",
+    "version": "1.1.0",
     "description": "The LocalSubscriber block subscribes to the configured topic and outputs signals received. Only LocalPublisher blocks on the same nio instance can send data to the block. Unlike the regular [Subscriber block](https://blocks.n.io/Subscriber), these signals do not need to contain data that is valid JSON.",
     "categories": [
       "Communication"
@@ -36,12 +51,27 @@
     "properties": {
       "local_identifier": {
         "title": "Local Identifier",
+        "advanced": true,
+        "order": null,
         "type": "StringType",
         "description": "Hidden property with a default of `[[INSTANCE_ID]]. Unique identifier of this instance in the nio system.",
         "default": "[[INSTANCE_ID]]"
       },
+      "timeout": {
+        "type": "TimeDeltaType",
+        "title": "Connect Timeout",
+        "advanced": true,
+        "order": null,
+        "visible": true,
+        "allow_none": false,
+        "default": {
+          "seconds": 2
+        }
+      },
       "topic": {
         "title": "Topic",
+        "advanced": true,
+        "order": null,
         "type": "StringType",
         "description": "Hierarchical topic string to subscribe to.",
         "default": ""
@@ -56,14 +86,27 @@
     "commands": {}
   },
   "nio/Publisher": {
-    "version": "1.0.2",
+    "version": "1.1.0",
     "description": "The Publisher block sends incoming signals to the configured topic. Topics can be static or dynamic bassed on the first signal in a list of signals.",
     "categories": [
       "Communication"
     ],
     "properties": {
+      "timeout": {
+        "type": "TimeDeltaType",
+        "title": "Connect Timeout",
+        "advanced": true,
+        "order": null,
+        "visible": true,
+        "allow_none": false,
+        "default": {
+          "seconds": 2
+        }
+      },
       "topic": {
         "title": "Topic",
+        "advanced": true,
+        "order": null,
         "type": "StringType",
         "description": "Hierarchical topic string to publish to.",
         "default": null
@@ -78,14 +121,27 @@
     "commands": {}
   },
   "nio/Subscriber": {
-    "version": "1.0.2",
+    "version": "1.1.0",
     "description": "The Subscriber block reads data from the configured topic and output signals received.",
     "categories": [
       "Communication"
     ],
     "properties": {
+      "timeout": {
+        "type": "TimeDeltaType",
+        "title": "Connect Timeout",
+        "advanced": true,
+        "order": null,
+        "visible": true,
+        "allow_none": false,
+        "default": {
+          "seconds": 2
+        }
+      },
       "topic": {
         "title": "Topic",
+        "advanced": true,
+        "order": null,
         "type": "StringType",
         "description": "Hierarchical topic string to subscribe to.",
         "default": null
