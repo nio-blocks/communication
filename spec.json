@@ -8,12 +8,27 @@
     "properties": {
       "local_identifier": {
         "title": "Local Identifier",
+        "advanced": true,
+        "order": null,
         "type": "StringType",
         "description": "Hidden property with a default of `[[INSTANCE_ID]]. Unique identifier of this instance in the nio system.",
         "default": "[[INSTANCE_ID]]"
       },
+      "timeout": {
+        "type": "TimeDeltaType",
+        "title": "Connect Timeout",
+        "advanced": true,
+        "order": null,
+        "visible": true,
+        "allow_none": false,
+        "default": {
+          "seconds": 2
+        }
+      },
       "topic": {
         "title": "Topic",
+        "advanced": true,
+        "order": null,
         "type": "StringType",
         "description": "Hierarchical topic string to publish to.",
         "default": ""
@@ -36,12 +51,27 @@
     "properties": {
       "local_identifier": {
         "title": "Local Identifier",
+        "advanced": true,
+        "order": null,
         "type": "StringType",
         "description": "Hidden property with a default of `[[INSTANCE_ID]]. Unique identifier of this instance in the nio system.",
         "default": "[[INSTANCE_ID]]"
       },
+      "timeout": {
+        "type": "TimeDeltaType",
+        "title": "Connect Timeout",
+        "advanced": true,
+        "order": null,
+        "visible": true,
+        "allow_none": false,
+        "default": {
+          "seconds": 2
+        }
+      },
       "topic": {
         "title": "Topic",
+        "advanced": true,
+        "order": null,
         "type": "StringType",
         "description": "Hierarchical topic string to subscribe to.",
         "default": ""
@@ -62,8 +92,21 @@
       "Communication"
     ],
     "properties": {
+      "timeout": {
+        "type": "TimeDeltaType",
+        "title": "Connect Timeout",
+        "advanced": true,
+        "order": null,
+        "visible": true,
+        "allow_none": false,
+        "default": {
+          "seconds": 2
+        }
+      },
       "topic": {
         "title": "Topic",
+        "advanced": true,
+        "order": null,
         "type": "StringType",
         "description": "Hierarchical topic string to publish to.",
         "default": null
@@ -84,8 +127,21 @@
       "Communication"
     ],
     "properties": {
+      "timeout": {
+        "type": "TimeDeltaType",
+        "title": "Connect Timeout",
+        "advanced": true,
+        "order": null,
+        "visible": true,
+        "allow_none": false,
+        "default": {
+          "seconds": 2
+        }
+      },
       "topic": {
         "title": "Topic",
+        "advanced": true,
+        "order": null,
         "type": "StringType",
         "description": "Hierarchical topic string to subscribe to.",
         "default": null
