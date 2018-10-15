@@ -36,7 +36,7 @@
     "commands": {}
   },
   "nio/LocalSubscriber": {
-    "version": "1.1.0",
+    "version": "1.1.1",
     "description": "The LocalSubscriber block subscribes to the configured topic and outputs signals received. Only LocalPublisher blocks on the same nio instance can send data to the block.",
     "categories": [
       "Communication"
