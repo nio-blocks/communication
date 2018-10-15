@@ -15,7 +15,7 @@ class Subscriber(PubSubConnectivity, GeneratorBlock):
 
     """
     version = VersionProperty("1.1.0")
-    topic = StringProperty(title='Topic')
+    topic = StringProperty(title="Topic", default="")
 
     def __init__(self):
         super().__init__()
