@@ -72,7 +72,7 @@
     "commands": {}
   },
   "nio/Publisher": {
-    "version": "1.1.0",
+    "version": "1.1.1",
     "description": "The Publisher block sends incoming signals to the configured topic. The entire signal must be JSON-serializable. For signals that cannot be represented in JSON, use a LocalPublisher if appropriate or [Pickle](https://github.com/nio-blocks/pickle) signals before publishing.",
     "categories": [
       "Communication"
