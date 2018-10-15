@@ -1,10 +1,11 @@
 LocalPublisher
 ==============
-The LocalPublisher publishes incoming signals to the configured topic. Topics can be static or dynamic bassed on the first signal in a list of signals. Only LocalSubscriber blocks on the same nio instance can subscribe to this data. Unlike the regular [Publisher block](https://blocks.n.io/Publisher), these signals do not need to contain data that is valid JSON.
+The LocalPublisher publishes incoming signals to the configured topic. Only LocalSubscriber blocks on the same nio instance can subscribe to this data. Signals will be pickled before publishing, so unlike the "regular" Publisher the entire signal does not need to be JSON-serializable.
 
 Properties
 ----------
-- **local_identifier**: Hidden property with a default of `[[INSTANCE_ID]]. Unique identifier of this instance in the nio system.
+- **local_identifier**: Hidden property with a default of `[[INSTANCE_ID]]`, the unique identifier of this instance in the nio system.
+- **timeout**: If a connection cannot be made in this time the block will be put into `warning` status.
 - **topic**: Hierarchical topic string to publish to.
 
 Inputs
@@ -27,12 +28,13 @@ None
 
 LocalSubscriber
 ===============
-The LocalSubscriber block subscribes to the configured topic and outputs signals received. Only LocalPublisher blocks on the same nio instance can send data to the block. Unlike the regular [Subscriber block](https://blocks.n.io/Subscriber), these signals do not need to contain data that is valid JSON.
+The LocalSubscriber block subscribes to the configured topic and outputs signals received. Only LocalPublisher blocks on the same nio instance can send data to the block.
 
 Properties
 ----------
-- **local_identifier**: Hidden property with a default of `[[INSTANCE_ID]]. Unique identifier of this instance in the nio system.
-- **topic**: Hierarchical topic string to subscribe to.
+- **local_identifier**: Hidden property with a default of `[[INSTANCE_ID]]`, the unique identifier of this instance in the nio system.
+- **timeout**: If a connection cannot be made in this time the block will be put into `warning` status.
+- **topic**: Hierarchical topic string to subscribe to, supports `*` as a wildcard character.
 
 Inputs
 ------
@@ -40,7 +42,7 @@ None
 
 Outputs
 -------
-- **default**: A signal of the message published to the configured topic.
+- **default**: The same list of signals that was published to the configured `topic` by a LocalPublisher.
 
 Commands
 --------
@@ -54,15 +56,16 @@ None
 
 Publisher
 =========
-The Publisher block sends incoming signals to the configured topic. Topics can be static or dynamic bassed on the first signal in a list of signals.
+The Publisher block sends incoming signals to the configured topic. The entire signal must be JSON-serializable. For signals that cannot be represented in JSON, use a LocalPublisher if appropriate or [Pickle](https://github.com/nio-blocks/pickle) signals before publishing.
 
 Properties
 ----------
+- **timeout**: If a connection cannot be made in this time the block will be put into `warning` status.
 - **topic**: Hierarchical topic string to publish to.
 
 Inputs
 ------
-- **default**: Each input signal will be sent along to the appropriate Subscribers based on the *topic*.
+- **default**: Any list of signals that can be serialized into JSON.
 
 Outputs
 -------
@@ -84,7 +87,8 @@ The Subscriber block reads data from the configured topic and output signals rec
 
 Properties
 ----------
-- **topic**: Hierarchical topic string to subscribe to.
+- **timeout**: If a connection cannot be made in this time the block will be put into `warning` status.
+- **topic**: Hierarchical topic string to subscribe to, supports `*` as a wildcard character.
 
 Inputs
 ------
@@ -92,7 +96,7 @@ None
 
 Outputs
 -------
-- **default**: Signal list for each message received on topic.
+- **default**: The same list of signals that was published to the configured `topic` by a Publisher.
 
 Commands
 --------

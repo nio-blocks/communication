@@ -1,34 +1,27 @@
 {
   "nio/LocalPublisher": {
     "version": "1.1.0",
-    "description": "The LocalPublisher publishes incoming signals to the configured topic. Topics can be static or dynamic bassed on the first signal in a list of signals. Only LocalSubscriber blocks on the same nio instance can subscribe to this data. Unlike the regular [Publisher block](https://blocks.n.io/Publisher), these signals do not need to contain data that is valid JSON.",
+    "description": "The LocalPublisher publishes incoming signals to the configured topic. Only LocalSubscriber blocks on the same nio instance can subscribe to this data. Signals will be pickled before publishing, so unlike the \"regular\" Publisher the entire signal does not need to be JSON-serializable.",
     "categories": [
       "Communication"
     ],
     "properties": {
       "local_identifier": {
         "title": "Local Identifier",
-        "advanced": true,
-        "order": null,
         "type": "StringType",
-        "description": "Hidden property with a default of `[[INSTANCE_ID]]. Unique identifier of this instance in the nio system.",
+        "description": "Hidden property with a default of `[[INSTANCE_ID]]`, the unique identifier of this instance in the nio system.",
         "default": "[[INSTANCE_ID]]"
       },
       "timeout": {
-        "type": "TimeDeltaType",
         "title": "Connect Timeout",
-        "advanced": true,
-        "order": null,
-        "visible": true,
-        "allow_none": false,
+        "type": "TimeDeltaType",
+        "description": "If a connection cannot be made in this time the block will be put into `warning` status.",
         "default": {
           "seconds": 2
         }
       },
       "topic": {
         "title": "Topic",
-        "advanced": true,
-        "order": null,
         "type": "StringType",
         "description": "Hierarchical topic string to publish to.",
         "default": ""
@@ -44,77 +37,65 @@
   },
   "nio/LocalSubscriber": {
     "version": "1.1.0",
-    "description": "The LocalSubscriber block subscribes to the configured topic and outputs signals received. Only LocalPublisher blocks on the same nio instance can send data to the block. Unlike the regular [Subscriber block](https://blocks.n.io/Subscriber), these signals do not need to contain data that is valid JSON.",
+    "description": "The LocalSubscriber block subscribes to the configured topic and outputs signals received. Only LocalPublisher blocks on the same nio instance can send data to the block.",
     "categories": [
       "Communication"
     ],
     "properties": {
       "local_identifier": {
         "title": "Local Identifier",
-        "advanced": true,
-        "order": null,
         "type": "StringType",
-        "description": "Hidden property with a default of `[[INSTANCE_ID]]. Unique identifier of this instance in the nio system.",
+        "description": "Hidden property with a default of `[[INSTANCE_ID]]`, the unique identifier of this instance in the nio system.",
         "default": "[[INSTANCE_ID]]"
       },
       "timeout": {
-        "type": "TimeDeltaType",
         "title": "Connect Timeout",
-        "advanced": true,
-        "order": null,
-        "visible": true,
-        "allow_none": false,
+        "type": "TimeDeltaType",
+        "description": "If a connection cannot be made in this time the block will be put into `warning` status.",
         "default": {
           "seconds": 2
         }
       },
       "topic": {
         "title": "Topic",
-        "advanced": true,
-        "order": null,
         "type": "StringType",
-        "description": "Hierarchical topic string to subscribe to.",
+        "description": "Hierarchical topic string to subscribe to, supports `*` as a wildcard character.",
         "default": ""
       }
     },
     "inputs": {},
     "outputs": {
       "default": {
-        "description": "A signal of the message published to the configured topic."
+        "description": "The same list of signals that was published to the configured `topic` by a LocalPublisher."
       }
     },
     "commands": {}
   },
   "nio/Publisher": {
     "version": "1.1.0",
-    "description": "The Publisher block sends incoming signals to the configured topic. Topics can be static or dynamic bassed on the first signal in a list of signals.",
+    "description": "The Publisher block sends incoming signals to the configured topic. The entire signal must be JSON-serializable. For signals that cannot be represented in JSON, use a LocalPublisher if appropriate or [Pickle](https://github.com/nio-blocks/pickle) signals before publishing.",
     "categories": [
       "Communication"
     ],
     "properties": {
       "timeout": {
-        "type": "TimeDeltaType",
         "title": "Connect Timeout",
-        "advanced": true,
-        "order": null,
-        "visible": true,
-        "allow_none": false,
+        "type": "TimeDeltaType",
+        "description": "If a connection cannot be made in this time the block will be put into `warning` status.",
         "default": {
           "seconds": 2
         }
       },
       "topic": {
         "title": "Topic",
-        "advanced": true,
-        "order": null,
         "type": "StringType",
         "description": "Hierarchical topic string to publish to.",
-        "default": null
+        "default": ""
       }
     },
     "inputs": {
       "default": {
-        "description": "Each input signal will be sent along to the appropriate Subscribers based on the *topic*."
+        "description": "Any list of signals that can be serialized into JSON."
       }
     },
     "outputs": {},
@@ -128,29 +109,24 @@
     ],
     "properties": {
       "timeout": {
-        "type": "TimeDeltaType",
         "title": "Connect Timeout",
-        "advanced": true,
-        "order": null,
-        "visible": true,
-        "allow_none": false,
+        "type": "TimeDeltaType",
+        "description": "If a connection cannot be made in this time the block will be put into `warning` status.",
         "default": {
           "seconds": 2
         }
       },
       "topic": {
         "title": "Topic",
-        "advanced": true,
-        "order": null,
         "type": "StringType",
-        "description": "Hierarchical topic string to subscribe to.",
-        "default": null
+        "description": "Hierarchical topic string to subscribe to, supports `*` as a wildcard character.",
+        "default": ""
       }
     },
     "inputs": {},
     "outputs": {
       "default": {
-        "description": "Signal list for each message received on topic."
+        "description": "The same list of signals that was published to the configured `topic` by a Publisher."
       }
     },
     "commands": {}
