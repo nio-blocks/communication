@@ -14,7 +14,7 @@ class Subscriber(PubSubConnectivity, GeneratorBlock):
         topic (str): Defines topic to subscribe to in order to receive signals.
 
     """
-    version = VersionProperty("1.1.0")
+    version = VersionProperty("1.1.1")
     topic = StringProperty(title="Topic", default="")
 
     def __init__(self):
