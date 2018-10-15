@@ -1,6 +1,6 @@
 {
   "nio/LocalPublisher": {
-    "version": "1.1.0",
+    "version": "1.1.1",
     "description": "The LocalPublisher publishes incoming signals to the configured topic. Only LocalSubscriber blocks on the same nio instance can subscribe to this data. Signals will be pickled before publishing, so unlike the \"regular\" Publisher the entire signal does not need to be JSON-serializable.",
     "categories": [
       "Communication"
