@@ -1,6 +1,6 @@
 Subscriber
 ==========
-The Subscriber block reads data from the configured topic and output signals received.
+The Subscriber block reads data from the configured topic and outputs received signals. Subscriber blocks can receive signals on a configured topic from any instance within the same system. Signals must be valid JSON.
 
 Properties
 ----------

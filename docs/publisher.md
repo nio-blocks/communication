@@ -1,6 +1,6 @@
 Publisher
 =========
-The Publisher block sends incoming signals to the configured topic. Topics can be static or dynamic bassed on the first signal in a list of signals.
+The Publisher block sends input signals to the configured topic. Publisher blocks can send signals on a configured topic to any instance within the same system. Signals must be valid JSON.
 
 Properties
 ----------
