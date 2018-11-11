@@ -2,7 +2,6 @@ from threading import RLock, Event
 
 from nio.block.base import Base as BlockBase
 from nio.properties import TimeDeltaProperty
-from nio.signal.status import BlockStatusSignal
 from nio.util.runner import RunnerStatus
 
 
@@ -51,14 +50,9 @@ class PubSubConnectivity(object):
             self._connected_event.set()
             self._connected = True
 
-        # if there was a warning status formerly notified then
-        # notify "recovery"
+        # if there was a warning status formerly set then reset it
         if self._warning_status_set:
-            self.status.remove(RunnerStatus.warning)
-            # notify status change
-            signal = BlockStatusSignal(RunnerStatus.started,
-                                       message="Block is connected")
-            self.notify_management_signal(signal)
+            self.set_status('ok', 'Block is connected')
 
     def conn_on_disconnected(self):
         # ignore disconnections when stopping/stopped
@@ -75,9 +69,5 @@ class PubSubConnectivity(object):
         with self._connected_lock:
             # double check that we are disconnected before notifying
             if not self._connected:
-                signal = BlockStatusSignal(RunnerStatus.warning,
-                                           message="Block is not connected")
-                self.notify_management_signal(signal)
-                # set block in warning status
-                self.status.add(RunnerStatus.warning)
+                self.set_status('warning', 'Block is not connected')
                 self._warning_status_set = True
