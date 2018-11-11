@@ -1,6 +1,6 @@
 LocalSubscriber
 ===============
-The LocalSubscriber block subscribes to the configured topic and outputs signals received. Only LocalPublisher blocks on the same nio instance can send data to the block. Unlike the Subscriber block, these signals do not need to contain data that is valid JSON.
+The LocalSubscriber block subscribes to the configured topic and outputs signals received. Only LocalPublisher blocks on the same nio instance can send data to the LocalSubscriber blocks. Unlike the Subscriber block, these signals do not need to contain data that is valid JSON.
 
 Properties
 ----------

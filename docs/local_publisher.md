@@ -1,6 +1,6 @@
 LocalPublisher
 ==============
-The LocalPublisher publishes incoming signals to the configured topic. Topics can be static or dynamic bassed on the first signal in a list of signals. Only LocalSubscriber blocks on the same nio instance can subscribe to this data. Unlike the Publisher block, these signals do not need to contain data that is valid JSON.
+The LocalPublisher publishes incoming signals to the configured topic. Only LocalSubscriber blocks on the same nio instance can subscribe to this data. Unlike the Publisher block, these signals do not need to contain data that is valid JSON.
 
 Properties
 ----------
