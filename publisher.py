@@ -15,8 +15,8 @@ class Publisher(PubSubConnectivity, TerminatorBlock):
         topic (str): Defines topic to use to publish signals.
 
     """
-    version = VersionProperty("1.1.0")
-    topic = StringProperty(title='Topic')
+    version = VersionProperty("1.1.1")
+    topic = StringProperty(title="Topic", default="")
 
     def __init__(self):
         super().__init__()
