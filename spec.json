@@ -7,7 +7,7 @@
     ],
     "tags": "send publish topic structure message messaging dot hierarchy",
     "from_readme": "docs/local_publisher_block.md",
-    "from_python": "local_publisher_block.LocalPublisher"
+    "from_python": "local_publisher.LocalPublisher"
   },
   "nio/LocalSubscriber": {
     "version": "1.1.0",
@@ -17,7 +17,7 @@
     ],
     "tags": "receive subscribe topic structure message messaging dot hierarchy",
     "from_readme": "docs/local_subscriber_block.md",
-    "from_python": "local_subscriber_block.LocalSubscriber"
+    "from_python": "local_subscriber.LocalSubscriber"
   },
   "nio/Publisher": {
     "version": "1.1.0",
@@ -27,7 +27,7 @@
     ],
     "tags": "send publish topic structure message messaging json pickle dot hierarchy",
     "from_readme": "docs/publisher_block.md",
-    "from_python": "publisher_block.Publisher"
+    "from_python": "publisher.Publisher"
   },
   "nio/Subscriber": {
     "version": "1.1.0",
@@ -37,6 +37,6 @@
     ],
     "tags": "receive subscribe topic structure message messaging json pickle dot hierarchy",
     "from_readme": "docs/subscriber_block.md",
-    "from_python": "subscriber_block.Subscriber"
+    "from_python": "subscriber.Subscriber"
   }
 }
