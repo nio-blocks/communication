@@ -1,24 +1,9 @@
 LocalPublisher
 ==============
-The LocalPublisher publishes incoming signals to the configured topic. Only LocalSubscriber blocks on the same nio instance can subscribe to this data. Unlike the Publisher block, these signals do not need to contain data that is valid JSON.
+The LocalPublisher publishes incoming signals to the configured topic. Only LocalSubscriber blocks on the same nio instance can subscribe to this data. Signals will be pickled before publishing, so unlike the "regular" Publisher the entire signal does not need to be JSON-serializable.
+
+For more information on publishing to topics, view the [pub/sub docs.](https://docs.n.io/service-design-patterns/pub-sub.html)
 
 Properties
 ----------
-- **local_identifier**: Hidden property with a default of `[[INSTANCE_ID]]`. Unique identifier of this instance in the nio system.
-- **topic**: Hierarchical topic string to publish to.
-
-Inputs
-------
-- **default**: Any list of signals.
-
-Outputs
--------
-None
-
-Commands
---------
-None
-
-Dependencies
-------------
-None
+- **Topic**: Hierarchical topic string to publish to.

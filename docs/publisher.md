@@ -1,23 +1,9 @@
 Publisher
 =========
-The Publisher block sends signals to the configured topic. Publisher blocks can send signals on a configured topic to a subscriber block in any instance within the same system. Signals must be valid JSON.
+The Publisher block sends signals to the configured topic. Publisher blocks can send signals on a configured topic to a subscriber block in any instance within the same system. The entire signal must be JSON-serializable. For signals that cannot be represented in JSON, use a LocalPublisher if appropriate or Pickle signals before publishing.
+
+For more information on publishing to topics, view the [pub/sub docs.](https://docs.n.io/service-design-patterns/pub-sub.html)
 
 Properties
 ----------
-- **topic**: Hierarchical topic string to publish to.
-
-Inputs
-------
-- **default**: Each input signal will be sent along to the appropriate Subscribers based on the *topic*.
-
-Outputs
--------
-None
-
-Commands
---------
-None
-
-Dependencies
-------------
-None
+- **Topic**: Hierarchical topic string to publish to.
