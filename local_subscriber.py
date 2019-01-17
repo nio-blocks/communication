@@ -1,7 +1,7 @@
 from base64 import b64decode
 import pickle
 
-from nio import GeneratorBlock
+from nio import GeneratorBlock, Signal
 from nio.modules.communication.subscriber import Subscriber as NioSubscriber
 from nio.properties import StringProperty, VersionProperty
 
@@ -57,9 +57,21 @@ class LocalSubscriber(PubSubConnectivity, GeneratorBlock):
             signals = pickle.loads(signals)
         except pickle.UnpicklingError:
             self.logger.exception("Unpickling based pickle error")
+        except AttributeError:
+            # It's possible these came from a non-local publisher
+            # This would occur in service tests or if a regular publisher
+            # wanted to publish to a local topic. In the non-service test
+            # case this would generally indicate bad service design but we
+            # don't want to explicitly prevent/forbid it
+            if (signals and
+                    isinstance(signals, list) and
+                    isinstance(signals[0], Signal)):
+                self.notify_signals(signals)
+            else:
+                raise
         except TypeError:
             self.logger.exception("Unable to decode pickled signals")
-        except:
+        except Exception:
             self.logger.exception("Error handling signals")
         else:
             self.notify_signals(signals)
