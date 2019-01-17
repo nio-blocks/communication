@@ -18,7 +18,7 @@ class LocalSubscriber(PubSubConnectivity, GeneratorBlock):
     version = VersionProperty("1.1.0")
     topic = StringProperty(title='Topic', default="")
     local_identifier = StringProperty(
-        title='Local Identifier', default='[[INSTANCE_ID]]', visible=False)
+        title='Local Identifier', default='[[INSTANCE_ID]]', advanced=True)
 
     def __init__(self):
         super().__init__()
@@ -26,9 +26,11 @@ class LocalSubscriber(PubSubConnectivity, GeneratorBlock):
 
     def configure(self, context):
         super().configure(context)
-        self._subscriber = NioSubscriber(
-            self._subscriber_handler,
-            topic="{}.{}".format(self.local_identifier(), self.topic()))
+        topic = self.topic()
+        # If a local identifier was included use it as a prefix
+        if self.local_identifier():
+            topic = "{}.{}".format(self.local_identifier(), topic)
+        self._subscriber = NioSubscriber(self._subscriber_handler, topic=topic)
 
         try:
             self._subscriber.open(on_connected=self.conn_on_connected,

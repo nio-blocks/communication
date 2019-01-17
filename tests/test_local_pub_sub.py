@@ -71,3 +71,16 @@ class TestLocalPubSub(NIOBlockTestCase):
 
             subscriber.stop()
             communication.return_value.close.assert_called_once_with()
+
+    def test_no_local_id(self):
+        """ Make sure they can ignore the local id prefix if desired """
+        subscriber = Subscriber()
+        with patch(Subscriber.__module__ + '.NioSubscriber') as communication:
+            self.configure_block(
+                subscriber, {"topic": "topic", "local_identifier": ""})
+            communication.assert_called_once_with(ANY, topic="topic")
+        publisher = Publisher()
+        with patch(Publisher.__module__ + '.NioPublisher') as communication:
+            self.configure_block(
+                publisher, {"topic": "topic", "local_identifier": ""})
+            communication.assert_called_once_with(topic="topic")
