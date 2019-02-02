@@ -41,7 +41,7 @@ class DynamicPublisher(PubSubConnectivity, TerminatorBlock):
 
         with self._cache_lock:
             expired_topics = []
-            for topic in self._cache.keys():
+            for topic in self._cache:
                 _, prev = self._cache[topic]
 
                 if now - prev > ttl:
