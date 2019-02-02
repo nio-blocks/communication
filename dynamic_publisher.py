@@ -95,7 +95,7 @@ class DynamicPublisher(PubSubConnectivity, TerminatorBlock):
                 # try previous interface
                 publisher.open()
                 # no need to configure connectivity if not supported
-                return
+                return publisher
 
             self.conn_configure(publisher.is_connected)
             self._cache[topic] = (publisher, now)
