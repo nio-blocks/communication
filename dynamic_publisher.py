@@ -48,7 +48,7 @@ class DynamicPublisher(PubSubConnectivity, TerminatorBlock):
                     expired_topics.append(topic)
 
             for topic in expired_topics:
-                self.logger.info('removing expired publisher for ' + topic)
+                self.logger.info('removing expired publisher for "{}"'.format(topic))
                 pub, _ = self._cache[topic]
                 pub.close()
                 del self._cache[topic]
@@ -72,7 +72,7 @@ class DynamicPublisher(PubSubConnectivity, TerminatorBlock):
                 out_signals = groups[topic]
                 self._get_publisher(topic).send(out_signals)
             except PublisherError:  # pragma no cover
-                self.logger.exception("Error publishing " + len(out_signals) + " signals to " + topic)
+                self.logger.exception('Error publishing {:n} signals to "{}"'.format(len(out_signals), topic))
 
     def _get_publisher(self, topic):
         now = monotonic()
@@ -83,7 +83,7 @@ class DynamicPublisher(PubSubConnectivity, TerminatorBlock):
                 self._cache[topic] = (publisher, now)
                 return publisher
 
-            self.logger.info('creating new publisher for ' + topic)
+            self.logger.info('creating new publisher for "{}"'.format(topic))
             publisher = NioPublisher(topic=topic)
 
             try:
@@ -91,7 +91,7 @@ class DynamicPublisher(PubSubConnectivity, TerminatorBlock):
                                on_disconnected=self.conn_on_disconnected)
             except TypeError as e:
                 self.logger.warning(
-                    "Connecting to an outdated communication module")
+                    'Connecting to an outdated communication module')
                 # try previous interface
                 publisher.open()
                 # no need to configure connectivity if not supported
