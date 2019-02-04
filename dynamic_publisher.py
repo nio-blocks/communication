@@ -25,7 +25,7 @@ class DynamicPublisher(PubSubConnectivity, TerminatorBlock):
     ttl = TimeDeltaProperty(title="Time-to-live",
                             advanced=True,
                             order=0,
-                            default=dict(seconds=10))
+                            default=dict(seconds=600))
     def __init__(self):
         super().__init__()
         self._cache = keydefaultdict(lambda topic: (self._create_publisher(topic), None))
