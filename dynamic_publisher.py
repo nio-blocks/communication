@@ -1,6 +1,6 @@
 from collections import defaultdict
 from threading import Lock
-from time import time
+from time import monotonic
 
 from nio import TerminatorBlock, Block
 from nio.modules.communication.publisher import Publisher as NioPublisher
@@ -36,7 +36,7 @@ class DynamicPublisher(PubSubConnectivity, TerminatorBlock):
         )
 
     def _cleanup(self):
-        now = time()
+        now = monotonic()
         ttl = self.ttl().total_seconds()
 
         with self._cache_lock:
@@ -75,7 +75,7 @@ class DynamicPublisher(PubSubConnectivity, TerminatorBlock):
                 self.logger.exception("Error publishing " + len(out_signals) + " signals to " + topic)
 
     def _get_publisher(self, topic):
-        now = time()
+        now = monotonic()
 
         with self._cache_lock:
             if topic in self._cache:
