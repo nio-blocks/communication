@@ -28,7 +28,7 @@ class DynamicPublisher(PubSubConnectivity, TerminatorBlock):
                             default=dict(seconds=600))
     def __init__(self):
         super().__init__()
-        self._cache = keydefaultdict(lambda topic: (self._create_publisher(topic), None))
+        self._cache = keydefaultdict(lambda topic: (self.__create_publisher(topic), None))
         self._cache_lock = Lock()
 
     def process_signals(self, in_signals):
@@ -47,17 +47,17 @@ class DynamicPublisher(PubSubConnectivity, TerminatorBlock):
 
         for topic, out_signals in groups.items():
             try:
-                self._get_publisher(topic, ttl).send(out_signals)
+                self.__get_publisher(topic, ttl).send(out_signals)
             except PublisherError:  # pragma no cover
                 self.logger.exception('Error publishing {:n} signals to "{}"'.format(len(out_signals), topic))
 
-    def _cleanup(self, topic):
+    def __cleanup(self, topic):
         with self._cache_lock:
             self.logger.info('removing expired publisher for "{}"'.format(topic))
             pub, _ = self._cache.pop(topic)
             pub.close()
 
-    def _create_publisher(self, topic):
+    def __create_publisher(self, topic):
         self.logger.info('creating new publisher for "{}"'.format(topic))
         publisher = NioPublisher(topic=topic)
 
@@ -75,14 +75,14 @@ class DynamicPublisher(PubSubConnectivity, TerminatorBlock):
         self.conn_configure(publisher.is_connected)
         return publisher
 
-    def _get_publisher(self, topic, ttl):
+    def __get_publisher(self, topic, ttl):
         with self._cache_lock:
             publisher, prev_job = self._cache[topic]
             if prev_job is not None:
                 prev_job.cancel()
 
             self._cache[topic] = (publisher, Job(
-                self._cleanup,
+                self.__cleanup,
                 ttl,
                 False,
                 topic))
