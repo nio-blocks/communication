@@ -55,7 +55,7 @@ class DynamicPublisher(PubSubConnectivity, TerminatorBlock):
             except PublisherError:  # pragma no cover
                 self.logger.exception('Error publishing {:n} signals to "{}"'.format(len(out_signals), topic))
 
-    def __cleanup(self, topic):
+    def __close_publisher(self, topic):
         with self._cache_lock:
             self.logger.info('removing expired publisher for "{}"'.format(topic))
             pub, _ = self._cache.pop(topic)
@@ -87,7 +87,7 @@ class DynamicPublisher(PubSubConnectivity, TerminatorBlock):
                 prev_job.cancel()
 
             self._cache[topic] = (publisher, Job(
-                self.__cleanup,
+                self.__close_publisher,
                 ttl,
                 False,
                 topic))
