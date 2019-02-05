@@ -37,7 +37,7 @@ class DynamicPublisher(PubSubConnectivity, TerminatorBlock):
         self._cache_lock = Lock()
 
     def process_signals(self, in_signals):
-        """ Publish each list of signals """
+        """ Publish each group of signals """
         ttl = self.ttl()
         groups = defaultdict(list)
 
