@@ -44,8 +44,8 @@ class DynamicPublisher(PubSubConnectivity, TerminatorBlock):
         for signal in in_signals:
             try:
                 topic = self.topic(signal)
-            except:
-                self.logger.error('topic expression failed, ignoring signal')
+            except Exception:
+                self.logger.exception('topic expression failed, ignoring signal')
                 continue
             groups[topic].append(signal)
 
