@@ -21,12 +21,16 @@ class keydefaultdict(defaultdict):
 
 class DynamicPublisher(PubSubConnectivity, TerminatorBlock):
     version = VersionProperty("0.1.0")
-    topic = StringProperty(title="Topic", default="")
+    topic = StringProperty(
+        title="Topic",
+        default="")
 
-    ttl = TimeDeltaProperty(title="Time-to-live",
-                            advanced=True,
-                            order=0,
-                            default=dict(seconds=600))
+    ttl = TimeDeltaProperty(
+        title="Time-to-live",
+        advanced=True,
+        order=0,
+        default=dict(seconds=600))
+
     def __init__(self):
         super().__init__()
         self._cache = keydefaultdict(lambda topic: (self.__create_publisher(topic), None))
@@ -62,8 +66,9 @@ class DynamicPublisher(PubSubConnectivity, TerminatorBlock):
         publisher = NioPublisher(topic=topic)
 
         try:
-            publisher.open(on_connected=self.conn_on_connected,
-                           on_disconnected=self.conn_on_disconnected)
+            publisher.open(
+                on_connected=self.conn_on_connected,
+                on_disconnected=self.conn_on_disconnected)
         except TypeError as e:
             self.logger.warning(
                 'Connecting to an outdated communication module')
