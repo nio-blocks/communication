@@ -36,6 +36,15 @@ class DynamicPublisher(PubSubConnectivity, TerminatorBlock):
         self._cache = keydefaultdict(lambda topic: (self.__create_publisher(topic), None))
         self._cache_lock = Lock()
 
+    def stop(self):
+        with self._cache_lock:
+            for topic in self._cache:
+                (pub, job) = self._cache[topic]
+                job.cancel()
+                pub.close()
+
+            self._cache.clear()
+
     def process_signals(self, in_signals):
         """ Publish each group of signals """
         ttl = self.ttl()
