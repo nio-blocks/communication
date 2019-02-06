@@ -57,7 +57,6 @@ class TestDynamicPublisher(NIOBlockTestCase):
             publisher.stop()
             self.assertEqual(pub.return_value.close.call_count, 2)
 
-
     def test_reusing_pubs(self):
         publisher = DynamicPublisher()
         topic = "topic.{{ $sig }}"
@@ -89,7 +88,7 @@ class TestDynamicPublisher(NIOBlockTestCase):
         bar_pub = Mock()
         baz_pub = Mock()
 
-        with patch(DynamicPublisher.__module__ + '.Publisher', side_effect = [foo_pub, bar_pub, baz_pub]) as pub:
+        with patch(DynamicPublisher.__module__ + '.Publisher', side_effect=[foo_pub, bar_pub, baz_pub]) as pub:
             self.configure_block(publisher, {"topic": topic})
             publisher.start()
 
