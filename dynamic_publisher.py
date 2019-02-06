@@ -2,7 +2,7 @@ from collections import defaultdict
 from threading import Lock
 
 from nio import TerminatorBlock
-from nio.modules.communication.publisher import Publisher as NioPublisher
+from nio.modules.communication.publisher import Publisher
 from nio.modules.communication.publisher import PublisherError
 from nio.modules.scheduler import Job
 from nio.properties import StringProperty, TimeDeltaProperty, VersionProperty
@@ -63,7 +63,7 @@ class DynamicPublisher(PubSubConnectivity, TerminatorBlock):
 
     def __create_publisher(self, topic):
         self.logger.info('creating new publisher for "{}"'.format(topic))
-        publisher = NioPublisher(topic=topic)
+        publisher = Publisher(topic=topic)
 
         try:
             publisher.open(
