@@ -1,4 +1,4 @@
-Publisher
+DynamicPublisher
 =========
 The DynamicPublisher block sends signals to a dynamic topic. The topic expression is evaulated for _each_ signal, and the resulting topic is used to publish. The entire signal must be JSON-serializable. 
 
