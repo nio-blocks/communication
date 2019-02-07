@@ -18,5 +18,10 @@
     "language": "Python",
     "from_python": "subscriber.Subscriber",
     "url": "git://github.com/nio-blocks/communication.git"
+  },
+  "nio/DynamicPublisher": {
+    "language": "Python",
+    "from_python": "dynamic_publisher.DynamicPublisher",
+    "url": "git://github.com/nio-blocks/communication.git"
   }
 }
