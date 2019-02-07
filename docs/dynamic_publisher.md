@@ -25,7 +25,7 @@ topic: "airports.{{ $code }}.temperature"
 ```
 
 
-Passing in a signal `{ "location": "DEN", "temp": "26.4" }` will publish it to the topic `airports.DEN.temperature`. If that publisher doesn't already exist, it will be created, otherwise the existing publisher will be reused.
+Passing in a signal `{ "code": "DEN", "temp": "26.4" }` will publish it to the topic `airports.DEN.temperature`. If that publisher doesn't already exist, it will be created, otherwise the existing publisher will be reused.
 
 
 ##### Signal Grouping 
