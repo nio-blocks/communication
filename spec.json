@@ -38,5 +38,15 @@
     "tags": "receive subscribe topic structure message messaging json pickle dot hierarchy",
     "from_readme": "docs/subscriber.md",
     "from_python": "subscriber.Subscriber"
+  },
+  "nio/DynamicPublisher": {
+    "version": "0.1.0",
+    "description": "Sends incoming signals to a dynamic topic.",
+    "categories": [
+      "Communication"
+    ],
+    "tags": "send publish topic structure message messaging json pickle dot hierarchy dynamic fanout",
+    "from_readme": "docs/dynamic_publisher.md",
+    "from_python": "dynamic_publisher.DynamicPublisher"
   }
 }
