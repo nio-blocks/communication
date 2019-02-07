@@ -123,47 +123,6 @@ class TestDynamicPublisher(NIOBlockTestCase):
                 Signal(dict(sig="baz", val=3)),
             ])
 
-    def test_partitioning(self):
-        publisher = DynamicPublisher()
-        topic = "topic.{{ $sig }}"
-
-        foo_pub = Mock()
-        bar_pub = Mock()
-        baz_pub = Mock()
-
-        with patch(DynamicPublisher.__module__ + '.Publisher', side_effect=[foo_pub, bar_pub, baz_pub]) as pub:
-            self.configure_block(publisher, {"topic": topic})
-            publisher.start()
-
-            signals = [
-                Signal(dict(sig="foo", val=1)),
-                Signal(dict(sig="bar", val=2)),
-                Signal(dict(sig="baz", val=3)),
-                Signal(dict(sig="foo", val=4)),
-                Signal(dict(sig="bar", val=5)),
-                Signal(dict(sig="foo", val=6)),
-            ]
-            publisher.process_signals(signals)
-
-            pub.assert_any_call(topic="topic.foo")
-            pub.assert_any_call(topic="topic.bar")
-            pub.assert_any_call(topic="topic.baz")
-
-            foo_pub.send.assert_called_once_with([
-                Signal(dict(sig="foo", val=1)),
-                Signal(dict(sig="foo", val=4)),
-                Signal(dict(sig="foo", val=6)),
-            ])
-
-            bar_pub.send.assert_called_once_with([
-                Signal(dict(sig="bar", val=2)),
-                Signal(dict(sig="bar", val=5)),
-            ])
-
-            baz_pub.send.assert_called_once_with([
-                Signal(dict(sig="baz", val=3)),
-            ])
-
     @not_discoverable
     class EventDynamicPublisher(DynamicPublisher):
 
