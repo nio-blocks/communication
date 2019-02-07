@@ -1,6 +1,5 @@
 {
   "nio/LocalPublisher": {
-    "version": "1.1.0",
     "description": "Sends signals within the same instance to the configured topic.",
     "categories": [
       "Communication"
@@ -10,7 +9,6 @@
     "from_python": "local_publisher.LocalPublisher"
   },
   "nio/LocalSubscriber": {
-    "version": "1.1.0",
     "description": "Receives signals within the same instance from the configured topic.",
     "categories": [
       "Communication"
@@ -20,7 +18,6 @@
     "from_python": "local_subscriber.LocalSubscriber"
   },
   "nio/Publisher": {
-    "version": "1.1.0",
     "description": "Sends incoming signals to the configured topic.",
     "categories": [
       "Communication"
@@ -30,7 +27,6 @@
     "from_python": "publisher.Publisher"
   },
   "nio/Subscriber": {
-    "version": "1.1.0",
     "description": "Receives signals from the configured topic.",
     "categories": [
       "Communication"
@@ -40,7 +36,6 @@
     "from_python": "subscriber.Subscriber"
   },
   "nio/DynamicPublisher": {
-    "version": "0.1.0",
     "description": "Sends incoming signals to a dynamic topic.",
     "categories": [
       "Communication"
