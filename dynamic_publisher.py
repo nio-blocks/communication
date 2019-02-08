@@ -35,7 +35,6 @@ class DynamicPublisher(PubSubConnectivity, TerminatorBlock):
         default=dict(seconds=600))
     is_local = BoolProperty(
         advanced=True,
-        allow_none=True,
         default=False,
         order=1,
         title="Local Publisher?")
