@@ -11,77 +11,77 @@ from ..dynamic_publisher import DynamicPublisher
 
 class TestDynamicPublisher(NIOBlockTestCase):
 
-    def test_creating_a_publisher(self):
+    @patch(DynamicPublisher.__module__ + '.Publisher')
+    def test_creating_a_publisher(self, pub):
         publisher = DynamicPublisher()
         topic = "topic.{{ $sig }}"
 
-        with patch(DynamicPublisher.__module__ + '.Publisher') as pub:
-            self.configure_block(publisher, {"topic": topic})
-            publisher.start()
+        self.configure_block(publisher, {"topic": topic})
+        publisher.start()
 
-            pub.assert_not_called()
+        pub.assert_not_called()
 
-            signals = [Signal(dict(sig="foo"))]
-            publisher.process_signals(signals)
+        signals = [Signal(dict(sig="foo"))]
+        publisher.process_signals(signals)
 
-            pub.assert_called_once_with(topic="topic.foo")
-            self.assertEqual(pub.return_value.open.call_count, 1)
-            pub.return_value.send.assert_called_once_with(signals)
+        pub.assert_called_once_with(topic="topic.foo")
+        self.assertEqual(pub.return_value.open.call_count, 1)
+        pub.return_value.send.assert_called_once_with(signals)
 
-            publisher.stop()
-            pub.return_value.close.assert_called_once_with()
+        publisher.stop()
+        pub.return_value.close.assert_called_once_with()
 
-    def test_creating_multiple_publishers(self):
+    @patch(DynamicPublisher.__module__ + '.Publisher')
+    def test_creating_multiple_publishers(self, pub):
         publisher = DynamicPublisher()
         topic = "topic.{{ $sig }}"
 
-        with patch(DynamicPublisher.__module__ + '.Publisher') as pub:
-            self.configure_block(publisher, {"topic": topic})
-            publisher.start()
+        self.configure_block(publisher, {"topic": topic})
+        publisher.start()
 
-            pub.assert_not_called()
+        pub.assert_not_called()
 
-            signals = [Signal(dict(sig="foo"))]
-            publisher.process_signals(signals)
+        signals = [Signal(dict(sig="foo"))]
+        publisher.process_signals(signals)
 
-            pub.assert_called_once_with(topic="topic.foo")
-            self.assertEqual(pub.return_value.open.call_count, 1)
-            pub.return_value.send.assert_called_once_with(signals)
+        pub.assert_called_once_with(topic="topic.foo")
+        self.assertEqual(pub.return_value.open.call_count, 1)
+        pub.return_value.send.assert_called_once_with(signals)
 
-            pub.reset_mock()
+        pub.reset_mock()
 
-            signals = [Signal(dict(sig="bar"))]
-            publisher.process_signals(signals)
+        signals = [Signal(dict(sig="bar"))]
+        publisher.process_signals(signals)
 
-            pub.assert_called_once_with(topic="topic.bar")
-            self.assertEqual(pub.return_value.open.call_count, 1)
-            pub.return_value.send.assert_called_once_with(signals)
+        pub.assert_called_once_with(topic="topic.bar")
+        self.assertEqual(pub.return_value.open.call_count, 1)
+        pub.return_value.send.assert_called_once_with(signals)
 
-            publisher.stop()
-            self.assertEqual(pub.return_value.close.call_count, 2)
+        publisher.stop()
+        self.assertEqual(pub.return_value.close.call_count, 2)
 
-    def test_reusing_pubs(self):
+    @patch(DynamicPublisher.__module__ + '.Publisher')
+    def test_reusing_pubs(self, pub):
         publisher = DynamicPublisher()
         topic = "topic.{{ $sig }}"
 
-        with patch(DynamicPublisher.__module__ + '.Publisher') as pub:
-            self.configure_block(publisher, {"topic": topic})
-            publisher.start()
+        self.configure_block(publisher, {"topic": topic})
+        publisher.start()
 
-            pub.assert_not_called()
+        pub.assert_not_called()
 
-            signals = [Signal(dict(sig="foo", val=1))]
-            publisher.process_signals(signals)
+        signals = [Signal(dict(sig="foo", val=1))]
+        publisher.process_signals(signals)
 
-            pub.assert_called_once_with(topic="topic.foo")
-            self.assertEqual(pub.return_value.open.call_count, 1)
-            pub.return_value.send.assert_called_with(signals)
+        pub.assert_called_once_with(topic="topic.foo")
+        self.assertEqual(pub.return_value.open.call_count, 1)
+        pub.return_value.send.assert_called_with(signals)
 
-            signals = [Signal(dict(sig="foo", val=2))]
-            publisher.process_signals(signals)
+        signals = [Signal(dict(sig="foo", val=2))]
+        publisher.process_signals(signals)
 
-            self.assertEqual(pub.return_value.open.call_count, 1)
-            pub.return_value.send.assert_called_with(signals)
+        self.assertEqual(pub.return_value.open.call_count, 1)
+        pub.return_value.send.assert_called_with(signals)
 
     def test_partitioning(self):
         block = DynamicPublisher()
@@ -134,23 +134,24 @@ class TestDynamicPublisher(NIOBlockTestCase):
             self._event.set()
             self._event.clear()
 
-    def test_closing(self):
+    @patch(DynamicPublisher.__module__ + '.Publisher')
+    def test_closing(self, pub):
         event = Event()
-        with patch(DynamicPublisher.__module__ + '.Publisher') as pub:
-            block = TestDynamicPublisher.EventDynamicPublisher(event)
-            self.configure_block(block, dict(
-                topic="topic.{{ $sig }}",
-                ttl=dict(milliseconds=200),
-            ))
 
-            block.start()
-            block.process_signals([Signal(dict(sig="foo"))])
-            pub.assert_called_once_with(topic="topic.foo")
-            pub.return_value.close.assert_not_called()
+        block = TestDynamicPublisher.EventDynamicPublisher(event)
+        self.configure_block(block, dict(
+            topic="topic.{{ $sig }}",
+            ttl=dict(milliseconds=200),
+        ))
 
-            event.wait(.3)
+        block.start()
+        block.process_signals([Signal(dict(sig="foo"))])
+        pub.assert_called_once_with(topic="topic.foo")
+        pub.return_value.close.assert_not_called()
 
-            self.assertEqual(pub.return_value.close.call_count, 1)
+        event.wait(.3)
+
+        self.assertEqual(pub.return_value.close.call_count, 1)
 
     @patch(DynamicPublisher.__module__ + '.Publisher')
     def test_never_expiring(self, publisher):
