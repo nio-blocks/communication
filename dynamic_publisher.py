@@ -54,7 +54,7 @@ class DynamicPublisher(PubSubConnectivity, TerminatorBlock):
     def configure(self, context):
         super().configure(context)
         self._is_local = self.is_local()
-        if self.is_local:
+        if self._is_local:
             self._local_id = self.local_identifier()
 
     def stop(self):
