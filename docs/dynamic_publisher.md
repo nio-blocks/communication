@@ -6,12 +6,14 @@ For more information on publishing to topics, view the [pub/sub docs.](https://d
 
 Properties
 ----------
-- **topic**: Hierarchical topic expression to publish the incoming signals to. 
+- **Topic**: Hierarchical topic expression to publish the incoming signals to. 
 
 Advanced Properties
 ---
 
-- **ttl**: Time-to-live for each published **topic**. If no signals have been received for this **topic** within the **ttl** window, then the Publisher is eligible for removal/garbage-collection.
+- **Time-to-live**: Time-to-live for each published **topic**. If no signals have been received for this **topic** within the **ttl** window, then the Publisher is eligible for removal/garbage-collection.
+- **Local Publisher?**: Configure this DynamicPublisher to act like a LocalPublisher block—can send data to the LocalSubscriber blocks on the same instance.
+- **Local Identifier**: Override the local identifier for local publishers. This value is only applicable when **Local Publisher?** is enabled.
 
   Note: If the *Time-to-live* is a negative value, then the published topics will *never* expire.
 
@@ -84,4 +86,4 @@ topic: "queues.process.{{ random.randint(1,4) }}"
 Notes
 ---
 
-If your topic is static then consider using the [Publisher](publisher.md) block instead.
+If your topic is static then consider using the [Publisher](publisher.md) or [LocalPublisher](local_publisher.md) blocks instead.
