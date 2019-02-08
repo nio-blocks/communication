@@ -1,3 +1,5 @@
+import pickle
+from base64 import b64encode
 from collections import defaultdict
 from unittest.mock import patch, Mock
 from threading import Event
@@ -152,6 +154,32 @@ class TestDynamicPublisher(NIOBlockTestCase):
         event.wait(.3)
 
         self.assertEqual(pub.return_value.close.call_count, 1)
+
+    @patch(DynamicPublisher.__module__ + '.Publisher')
+    def test_local_dynamic_publisher(self, publisher):
+        block = DynamicPublisher()
+        topic = "topic.{{ $sig }}"
+
+        self.configure_block(block, dict(
+            topic=topic,
+            is_local=True,
+            local_identifier="test",
+        ))
+
+        block.start()
+        publisher.assert_not_called()
+        block.process_signals([Signal(dict(sig="foo"))])
+
+        # should create the correct topic
+        publisher.assert_called_once_with(topic="test.topic.foo")
+
+        # should call send once
+        publisher.return_value.send.assert_called_once()
+
+        # should be the correct format
+        self.assertEqual(
+            [s.to_dict() for s in publisher.return_value.send.call_args[0][0]],
+            [{"signals": b64encode(pickle.dumps([Signal(dict(sig="foo"))]))}])
 
     @patch(DynamicPublisher.__module__ + '.Publisher')
     def test_never_expiring(self, publisher):
