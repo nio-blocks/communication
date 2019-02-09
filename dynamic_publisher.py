@@ -40,7 +40,8 @@ class DynamicPublisher(PubSubConnectivity, TerminatorBlock):
         with self._cache_lock:
             for topic in self._cache:
                 (pub, job) = self._cache[topic]
-                job.cancel()
+                if job is not None:
+                    job.cancel()
                 pub.close()
 
             self._cache.clear()
@@ -95,10 +96,13 @@ class DynamicPublisher(PubSubConnectivity, TerminatorBlock):
             if prev_job is not None:
                 prev_job.cancel()
 
-            self._cache[topic] = (publisher, Job(
+            job = (Job(
                 self.__close_publisher,
                 ttl,
                 False,
-                topic))
+                topic,
+            ) if ttl.total_seconds() >= 0 else None)
+
+            self._cache[topic] = (publisher, job)
 
             return publisher
