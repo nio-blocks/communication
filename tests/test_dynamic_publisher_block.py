@@ -82,46 +82,46 @@ class TestDynamicPublisher(NIOBlockTestCase):
             self.assertEqual(pub.return_value.open.call_count, 1)
             pub.return_value.send.assert_called_with(signals)
 
-    def test_partitioning(self):
-        publisher = DynamicPublisher()
+    @patch(DynamicPublisher.__module__ + '.Publisher', side_effect=[Mock(), Mock(), Mock()])
+    def test_partitioning(self, pub):
+        block = DynamicPublisher()
         topic = "topic.{{ $sig }}"
 
-        foo_pub = Mock()
-        bar_pub = Mock()
-        baz_pub = Mock()
+        self.configure_block(block, {"topic": topic})
+        block.start()
 
-        with patch(DynamicPublisher.__module__ + '.Publisher', side_effect=[foo_pub, bar_pub, baz_pub]) as pub:
-            self.configure_block(publisher, {"topic": topic})
-            publisher.start()
+        signals = [
+            Signal(dict(sig="foo", val=1)),
+            Signal(dict(sig="bar", val=2)),
+            Signal(dict(sig="baz", val=3)),
+            Signal(dict(sig="foo", val=4)),
+            Signal(dict(sig="bar", val=5)),
+            Signal(dict(sig="foo", val=6)),
+        ]
+        block.process_signals(signals)
 
-            signals = [
-                Signal(dict(sig="foo", val=1)),
-                Signal(dict(sig="bar", val=2)),
-                Signal(dict(sig="baz", val=3)),
-                Signal(dict(sig="foo", val=4)),
-                Signal(dict(sig="bar", val=5)),
-                Signal(dict(sig="foo", val=6)),
-            ]
-            publisher.process_signals(signals)
+        pub.assert_any_call(topic="topic.foo")
+        pub.assert_any_call(topic="topic.bar")
+        pub.assert_any_call(topic="topic.baz")
 
-            pub.assert_any_call(topic="topic.foo")
-            pub.assert_any_call(topic="topic.bar")
-            pub.assert_any_call(topic="topic.baz")
+        foo_pub, _ = block._cache.get("topic.foo", Mock())
+        bar_pub, _ = block._cache.get("topic.bar", Mock())
+        baz_pub, _ = block._cache.get("topic.baz", Mock())
 
-            foo_pub.send.assert_called_once_with([
-                Signal(dict(sig="foo", val=1)),
-                Signal(dict(sig="foo", val=4)),
-                Signal(dict(sig="foo", val=6)),
-            ])
+        foo_pub.send.assert_called_once_with([
+            Signal(dict(sig="foo", val=1)),
+            Signal(dict(sig="foo", val=4)),
+            Signal(dict(sig="foo", val=6)),
+        ])
 
-            bar_pub.send.assert_called_once_with([
-                Signal(dict(sig="bar", val=2)),
-                Signal(dict(sig="bar", val=5)),
-            ])
+        bar_pub.send.assert_called_once_with([
+            Signal(dict(sig="bar", val=2)),
+            Signal(dict(sig="bar", val=5)),
+        ])
 
-            baz_pub.send.assert_called_once_with([
-                Signal(dict(sig="baz", val=3)),
-            ])
+        baz_pub.send.assert_called_once_with([
+            Signal(dict(sig="baz", val=3)),
+        ])
 
     @not_discoverable
     class EventDynamicPublisher(DynamicPublisher):
