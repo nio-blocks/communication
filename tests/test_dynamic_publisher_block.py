@@ -1,3 +1,4 @@
+from collections import defaultdict
 from unittest.mock import patch, Mock
 from threading import Event
 
@@ -82,46 +83,46 @@ class TestDynamicPublisher(NIOBlockTestCase):
             self.assertEqual(pub.return_value.open.call_count, 1)
             pub.return_value.send.assert_called_with(signals)
 
-    @patch(DynamicPublisher.__module__ + '.Publisher', side_effect=[Mock(), Mock(), Mock()])
-    def test_partitioning(self, pub):
+    def test_partitioning(self):
         block = DynamicPublisher()
-        topic = "topic.{{ $sig }}"
 
-        self.configure_block(block, {"topic": topic})
-        block.start()
+        publishers = defaultdict(lambda: Mock())
+        with patch(DynamicPublisher.__module__ + '.Publisher', side_effect=lambda topic: publishers[topic]) as pub:
+            self.configure_block(block, {"topic": "topic.{{ $sig }}"})
+            block.start()
 
-        signals = [
-            Signal(dict(sig="foo", val=1)),
-            Signal(dict(sig="bar", val=2)),
-            Signal(dict(sig="baz", val=3)),
-            Signal(dict(sig="foo", val=4)),
-            Signal(dict(sig="bar", val=5)),
-            Signal(dict(sig="foo", val=6)),
-        ]
-        block.process_signals(signals)
+            signals = [
+                Signal(dict(sig="foo", val=1)),
+                Signal(dict(sig="bar", val=2)),
+                Signal(dict(sig="baz", val=3)),
+                Signal(dict(sig="foo", val=4)),
+                Signal(dict(sig="bar", val=5)),
+                Signal(dict(sig="foo", val=6)),
+            ]
+            block.process_signals(signals)
 
-        pub.assert_any_call(topic="topic.foo")
-        pub.assert_any_call(topic="topic.bar")
-        pub.assert_any_call(topic="topic.baz")
+            pub.assert_any_call(topic="topic.foo")
+            pub.assert_any_call(topic="topic.bar")
+            pub.assert_any_call(topic="topic.baz")
 
-        foo_pub, _ = block._cache.get("topic.foo")
-        bar_pub, _ = block._cache.get("topic.bar")
-        baz_pub, _ = block._cache.get("topic.baz")
+            foo_pub = publishers.get("topic.foo")
+            bar_pub = publishers.get("topic.bar")
+            baz_pub = publishers.get("topic.baz")
 
-        foo_pub.send.assert_called_once_with([
-            Signal(dict(sig="foo", val=1)),
-            Signal(dict(sig="foo", val=4)),
-            Signal(dict(sig="foo", val=6)),
-        ])
+            foo_pub.send.assert_called_once_with([
+                Signal(dict(sig="foo", val=1)),
+                Signal(dict(sig="foo", val=4)),
+                Signal(dict(sig="foo", val=6)),
+            ])
 
-        bar_pub.send.assert_called_once_with([
-            Signal(dict(sig="bar", val=2)),
-            Signal(dict(sig="bar", val=5)),
-        ])
+            bar_pub.send.assert_called_once_with([
+                Signal(dict(sig="bar", val=2)),
+                Signal(dict(sig="bar", val=5)),
+            ])
 
-        baz_pub.send.assert_called_once_with([
-            Signal(dict(sig="baz", val=3)),
-        ])
+            baz_pub.send.assert_called_once_with([
+                Signal(dict(sig="baz", val=3)),
+            ])
 
     @not_discoverable
     class EventDynamicPublisher(DynamicPublisher):
