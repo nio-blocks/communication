@@ -101,6 +101,7 @@ class TestDynamicPublisher(NIOBlockTestCase):
             ]
             block.process_signals(signals)
 
+            self.assertEqual(pub.call_count, 3)
             pub.assert_any_call(topic="topic.foo")
             pub.assert_any_call(topic="topic.bar")
             pub.assert_any_call(topic="topic.baz")
