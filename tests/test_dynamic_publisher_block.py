@@ -105,23 +105,19 @@ class TestDynamicPublisher(NIOBlockTestCase):
             pub.assert_any_call(topic="topic.foo")
             pub.assert_any_call(topic="topic.bar")
             pub.assert_any_call(topic="topic.baz")
-
-            foo_pub = publishers.get("topic.foo")
-            bar_pub = publishers.get("topic.bar")
-            baz_pub = publishers.get("topic.baz")
-
-            foo_pub.send.assert_called_once_with([
+            
+            publishers.get("topic.foo").send.assert_called_once_with([
                 Signal(dict(sig="foo", val=1)),
                 Signal(dict(sig="foo", val=4)),
                 Signal(dict(sig="foo", val=6)),
             ])
 
-            bar_pub.send.assert_called_once_with([
+            publishers.get("topic.bar").send.assert_called_once_with([
                 Signal(dict(sig="bar", val=2)),
                 Signal(dict(sig="bar", val=5)),
             ])
 
-            baz_pub.send.assert_called_once_with([
+            publishers.get("topic.baz").send.assert_called_once_with([
                 Signal(dict(sig="baz", val=3)),
             ])
 
