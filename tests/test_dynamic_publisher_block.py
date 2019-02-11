@@ -86,8 +86,6 @@ class TestDynamicPublisher(NIOBlockTestCase):
     def test_partitioning(self):
         block = DynamicPublisher()
 
-        publishers = defaultdict(Mock)
-
         self.configure_block(block, {"topic": "topic.{{ $sig }}"})
         block.start()
 
@@ -100,6 +98,7 @@ class TestDynamicPublisher(NIOBlockTestCase):
             Signal(dict(sig="foo", val=6)),
         ]
 
+        publishers = defaultdict(Mock)
         with patch(DynamicPublisher.__module__ + '.Publisher', side_effect=lambda topic: publishers[topic]) as pub:
             block.process_signals(signals)
 
