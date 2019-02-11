@@ -151,7 +151,7 @@ class TestDynamicPublisher(NIOBlockTestCase):
 
             event.wait(.3)
 
-            pub.return_value.close.assert_called_once()
+            self.assertEqual(pub.return_value.close.call_count, 1)
 
     @patch(DynamicPublisher.__module__ + '.Publisher')
     def test_never_expiring(self, publisher):
@@ -164,11 +164,11 @@ class TestDynamicPublisher(NIOBlockTestCase):
         ))
 
         block.start()
-        publisher.assert_not_called()
+        self.assertEqual(publisher.call_count, 0)
         block.process_signals([Signal(dict(sig="foo"))])
 
         # should create the correct topic
         publisher.assert_called_once_with(topic="topic.foo")
 
         _, job = block._cache["topic.foo"]
-        self.assertEqual(job, None)
+        self.assertIsNone(job)
