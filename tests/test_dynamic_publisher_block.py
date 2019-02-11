@@ -104,9 +104,9 @@ class TestDynamicPublisher(NIOBlockTestCase):
         pub.assert_any_call(topic="topic.bar")
         pub.assert_any_call(topic="topic.baz")
 
-        foo_pub, _ = block._cache.get("topic.foo", Mock())
-        bar_pub, _ = block._cache.get("topic.bar", Mock())
-        baz_pub, _ = block._cache.get("topic.baz", Mock())
+        foo_pub, _ = block._cache.get("topic.foo")
+        bar_pub, _ = block._cache.get("topic.bar")
+        baz_pub, _ = block._cache.get("topic.baz")
 
         foo_pub.send.assert_called_once_with([
             Signal(dict(sig="foo", val=1)),
