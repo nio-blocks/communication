@@ -13,6 +13,8 @@ Advanced Properties
 
 - **ttl**: Time-to-live for each published **topic**. If no signals have been received for this **topic** within the **ttl** window, then the Publisher is eligible for removal/garbage-collection.
 
+  Note: If the *Time-to-live* is a negative value, then the published topics will *never* expire.
+
 Examples
 ---
 
