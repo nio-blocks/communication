@@ -22,7 +22,7 @@ class keydefaultdict(defaultdict):
 
 
 class DynamicPublisher(PubSubConnectivity, TerminatorBlock):
-    version = VersionProperty("0.1.0")
+    version = VersionProperty("0.2.0")
     topic = StringProperty(
         title="Topic",
         default="",
