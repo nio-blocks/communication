@@ -21,7 +21,7 @@ class TestDynamicPublisher(NIOBlockTestCase):
         self.configure_block(publisher, {"topic": topic})
         publisher.start()
 
-        pub.assert_not_called()
+        self.assertEqual(pub.call_count, 0)
 
         signals = [Signal(dict(sig="foo"))]
         publisher.process_signals(signals)
@@ -41,7 +41,7 @@ class TestDynamicPublisher(NIOBlockTestCase):
         self.configure_block(publisher, {"topic": topic})
         publisher.start()
 
-        pub.assert_not_called()
+        self.assertEqual(pub.call_count, 0)
 
         signals = [Signal(dict(sig="foo"))]
         publisher.process_signals(signals)
@@ -70,7 +70,7 @@ class TestDynamicPublisher(NIOBlockTestCase):
         self.configure_block(publisher, {"topic": topic})
         publisher.start()
 
-        pub.assert_not_called()
+        self.assertEqual(pub.call_count, 0)
 
         signals = [Signal(dict(sig="foo", val=1))]
         publisher.process_signals(signals)
@@ -149,7 +149,7 @@ class TestDynamicPublisher(NIOBlockTestCase):
         block.start()
         block.process_signals([Signal(dict(sig="foo"))])
         pub.assert_called_once_with(topic="topic.foo")
-        pub.return_value.close.assert_not_called()
+        self.assertEqual(pub.return_value.close.call_count, 0)
 
         event.wait(.3)
 
@@ -167,14 +167,14 @@ class TestDynamicPublisher(NIOBlockTestCase):
         ))
 
         block.start()
-        publisher.assert_not_called()
+        self.assertEqual(publisher.call_count, 0)
         block.process_signals([Signal(dict(sig="foo"))])
 
         # should create the correct topic
         publisher.assert_called_once_with(topic="test.topic.foo")
 
         # should call send once
-        publisher.return_value.send.assert_called_once()
+        self.assertEqual(publisher.return_value.send.call_count, 1)
 
         # should be the correct format
         self.assertEqual(
